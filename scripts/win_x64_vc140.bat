@@ -21,6 +21,6 @@ COPY %PROJECT_ROOT%\build\Release\craft_util.dll %PROJECT_ROOT%\out\bin\%TRIPLE_
 COPY %PROJECT_ROOT%\build\Release\craft_util.pdb %PROJECT_ROOT%\out\bin\%TRIPLE_CROSS%\
 COPY %PROJECT_ROOT%\build\Release\craft_util.lib %PROJECT_ROOT%\out\lib\%TRIPLE_CROSS%\
 
-ROBOCOPY /e %PROJECT_ROOT%\src  %PROJECT_ROOT%\out\include\ *.h *.hpp
+ROBOCOPY /e %PROJECT_ROOT%\src  %PROJECT_ROOT%\out\include\util\ *.h *.hpp
 
 cd %PROJECT_ROOT%

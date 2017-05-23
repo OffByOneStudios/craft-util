@@ -19,8 +19,9 @@ file(GLOB sources
   src/*.cpp
 )
 
-include_directories(${CMAKE_SOURCE_DIR}/src)
+set(files ${includes} ${sources})
 
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
 
 add_library(craft_util SHARED
@@ -31,7 +32,17 @@ add_library(craft_util SHARED
 
 add_precompiled_header(craft_util src/common.h FORCEINCLUDE)
 
+
 # Platform Specific
 if(MSVC)
+  # VS Filters
+  foreach(file IN LISTS files)
+      get_filename_component(source_path "${file}" PATH)
+      string(REPLACE ${CMAKE_SOURCE_DIR} "" sp_rel "${source_path}")
+      string(REPLACE "/" "\\" sp "${sp_rel}")
+      source_group( "${sp}" FILES "${file}")
+  endforeach()
+  source_group("PrecompiledHeader" FILES common.cpp)
+
   target_link_libraries(craft_util pathcch.lib shlwapi.lib)
 endif()
