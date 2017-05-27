@@ -1,8 +1,29 @@
 cmake_minimum_required(VERSION 3.7)
 
 
+# This Variable is the Simplest way to ensure your variables will work
+include(cmake/ResolveCraftRoot.cmake)
+# This is mandatory
+include(cmake/ResolveCraftCmake.cmake)
+
+MESSAGE(STATUS "CRAFT_CMAKE_DIR " ${CRAFT_CMAKE_DIR})
+# Use This To Support Multiplatforms or to use the Vendor Repo.
+include(${CRAFT_CMAKE_DIR}/ResolveCraftTripleCross.cmake)
+
+
+include(${CRAFT_CMAKE_DIR}/ResolveVendor.cmake)
+include (${CRAFT_CMAKE_DIR}/ImportDep.cmake)
+
+import_dep(base v1.0.0)
+
+# Use This is you depend on Vendors
+IF(NOT DEFINED CRAFT_ENGINE_VENDOR_DIR)
+  MESSAGE(FATAL_ERROR "Could not locate required dependency CRAFT_ENGINE_VENDOR_DIR")
+ENDIF()
+
+
 # External Cmake Deps
-include(cmake/PrecompiledHeader.cmake)
+include(${CRAFT_CMAKE_DIR}/PrecompiledHeader.cmake)
 
 # Preprocessor Defs
 add_definitions(-DCRAFT_UTIL_DLL)
@@ -34,15 +55,8 @@ add_precompiled_header(craft_util src/common.h FORCEINCLUDE)
 
 
 # Platform Specific
-if(MSVC)
-  # VS Filters
-  foreach(file IN LISTS files)
-      get_filename_component(source_path "${file}" PATH)
-      string(REPLACE ${CMAKE_SOURCE_DIR} "" sp_rel "${source_path}")
-      string(REPLACE "/" "\\" sp "${sp_rel}")
-      source_group( "${sp}" FILES "${file}")
-  endforeach()
-  source_group("PrecompiledHeader" FILES common.cpp)
+if(CRAFT_TRIPLE_CROSS STREQUAL "osx_x64_clang")
+  list(APPEND CMAKE_CXX_FLAGS "-std=c++0x -stdlib=libc++ -Wc++11-extensions")
+elseif(MSVC)
 
-  target_link_libraries(craft_util pathcch.lib shlwapi.lib)
 endif()
