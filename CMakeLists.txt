@@ -12,9 +12,9 @@ include(${CRAFT_CMAKE_DIR}/ResolveCraftTripleCross.cmake)
 
 
 include(${CRAFT_CMAKE_DIR}/ResolveVendor.cmake)
+include(${CRAFT_CMAKE_DIR}/MakeVSFilters.cmake)
 include (${CRAFT_CMAKE_DIR}/ImportDep.cmake)
 
-import_dep(base v1.0.0)
 
 # Use This is you depend on Vendors
 IF(NOT DEFINED CRAFT_ENGINE_VENDOR_DIR)
@@ -58,5 +58,6 @@ add_precompiled_header(craft_util src/common.h FORCEINCLUDE)
 if(CRAFT_TRIPLE_CROSS STREQUAL "osx_x64_clang")
   list(APPEND CMAKE_CXX_FLAGS "-std=c++0x -stdlib=libc++ -Wc++11-extensions")
 elseif(MSVC)
-
+  set(files ${includes} ${sources} ${docs})
+  VSFILTERS(${files})
 endif()
