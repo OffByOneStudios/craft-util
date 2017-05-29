@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
-
+if(TARGET CraftUtil)
+    return()
+endif(TARGET CraftUtil)
 
 # This Variable is the Simplest way to ensure your variables will work
 include(cmake/ResolveCraftRoot.cmake)
@@ -26,7 +28,7 @@ ENDIF()
 include(${CRAFT_CMAKE_DIR}/PrecompiledHeader.cmake)
 
 # Preprocessor Defs
-add_definitions(-DCRAFT_UTIL_DLL
+add_definitions(
     -D${CRAFT_TRIPLE_CROSS}
 )
 
@@ -57,6 +59,9 @@ add_library(CraftUtil SHARED
   ${includes}
   common.cpp
 )
+
+target_compile_definitions(CraftUtil PRIVATE CRAFT_UTIL_DLL)
+
 
 add_precompiled_header(CraftUtil src/util/common.h FORCEINCLUDE)
 
