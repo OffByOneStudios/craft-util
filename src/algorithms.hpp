@@ -223,13 +223,13 @@ namespace stdext
 		}
 		return os.str();
 	}
-	template<class InputIterator, class CharType = std::iterator_traits<InputIterator>::value_type::value_type>
+	template<class InputIterator, class CharType = typename std::iterator_traits<InputIterator>::value_type::value_type>
 	inline std::basic_string<CharType> longest_common_prefix(InputIterator const& begin, InputIterator const& end, size_t offset = 0)
 	{
 		std::basic_ostringstream<CharType> os;
 		auto it = begin;
 		bool cont = it != end;
-		size_t length = MAXSIZE_T;
+		size_t length = SIZE_T_MAX;
 		while (cont)
 		{
 			length = ((*it).size() < length) ? (*it).size() : length;

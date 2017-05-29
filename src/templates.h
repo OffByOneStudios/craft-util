@@ -16,6 +16,7 @@ See these tutorials:
 
 inline namespace _t
 {
+    
 	template< class... >
 	using
 		void_t = void;
@@ -179,6 +180,8 @@ inline constexpr size_t offset_of(T1 T2::*member) {
 
 namespace stdext
 {
+    namespace pl = std::placeholders;
+    
 	template<typename TThis, typename TRet, typename TClass>
 	inline std::function<TRet()> 
 		bindmem(TThis _this, TRet(TClass::*f)())
@@ -191,7 +194,7 @@ namespace stdext
 	inline std::function<TRet(TParam1)> 
 		bindmem(TThis _this, TRet(TClass::*f)(TParam1))
 	{
-		return std::bind(f, static_cast<TClass*>(_this), _1);
+		return std::bind(f, static_cast<TClass*>(_this), pl::_1);
 	}
 
 	template<typename TThis, typename TRet, typename TClass
@@ -199,7 +202,7 @@ namespace stdext
 	inline std::function<TRet(TParam1, TParam2)> 
 		bindmem(TThis _this, TRet(TClass::*f)(TParam1, TParam2))
 	{
-		return std::bind(f, static_cast<TClass*>(_this), _1, _2);
+        return std::bind(f, static_cast<TClass*>(_this), pl::_1, pl::_2);
 	}
 
 	template<typename TThis, typename TRet, typename TClass
@@ -207,7 +210,7 @@ namespace stdext
 	inline std::function<TRet(TParam1, TParam2, TParam3)>
 		bindmem(TThis _this, TRet(TClass::*f)(TParam1, TParam2, TParam3))
 	{
-		return std::bind(f, static_cast<TClass*>(_this), _1, _2, _3);
+        return std::bind(f, static_cast<TClass*>(_this), pl::_1, pl::_2, pl::_3);
 	}
 
 	template<typename TThis, typename TRet, typename TClass
@@ -215,7 +218,7 @@ namespace stdext
 	inline std::function<TRet(TParam1, TParam2, TParam3, TParam4)> 
 		bindmem(TThis _this, TRet(TClass::*f)(TParam1, TParam2, TParam3, TParam4))
 	{
-		return std::bind(f, static_cast<TClass*>(_this), _1, _2, _3, _4);
+		return std::bind(f, static_cast<TClass*>(_this), pl::_1, pl::_2, pl::_3, pl::_4);
 	}
 }
 

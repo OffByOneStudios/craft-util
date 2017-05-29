@@ -26,7 +26,9 @@ ENDIF()
 include(${CRAFT_CMAKE_DIR}/PrecompiledHeader.cmake)
 
 # Preprocessor Defs
-add_definitions(-DCRAFT_UTIL_DLL)
+add_definitions(-DCRAFT_UTIL_DLL
+    -D${CRAFT_TRIPLE_CROSS}
+)
 
 # File Operations
 file(GLOB includes
@@ -40,23 +42,35 @@ file(GLOB sources
   src/*.cpp
 )
 
+file(GLOB tests
+  test/*.cpp
+)
+
 set(files ${includes} ${sources})
 
-include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(
+  ${CMAKE_SOURCE_DIR}/src
+  ${CRAFT_VENDOR_INCLUDE_DIRECTORY}
+)
 
 
-add_library(craft_util SHARED
+add_library(CraftUtil SHARED
   ${sources}
   ${includes}
   common.cpp
 )
 
-add_precompiled_header(craft_util src/common.h FORCEINCLUDE)
+add_precompiled_header(CraftUtil src/common.h FORCEINCLUDE)
 
+add_executable(CraftUtilTests
+  ${tests}
+)
+
+target_link_libraries (CraftUtilTests CraftUtil)
 
 # Platform Specific
 if(CRAFT_TRIPLE_CROSS STREQUAL "osx_x64_clang")
-  list(APPEND CMAKE_CXX_FLAGS "-std=c++0x -stdlib=libc++ -Wc++11-extensions")
+  list(APPEND CMAKE_CXX_FLAGS "-std=c++14 -stdlib=libc++ -Wc++11-extensions")
 elseif(MSVC)
   set(files ${includes} ${sources} ${docs})
   VSFILTERS(${files})
