@@ -16,6 +16,7 @@
 #include <set>
 #include <string>
 #include <type_traits>
+#include <algorithm>
 #include <functional>
 #include <vector>
 #include <stack>
