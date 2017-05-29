@@ -57,8 +57,8 @@ mkdir -p $PROJECT_ROOT/dist/lib/$TRIPLE_CROSS/debug
 #
 cp $PROJECT_ROOT/build/*.dylib $PROJECT_ROOT/dist/lib/$TRIPLE_CROSS
 
-cp -R $PROJECT_ROOT/src/*.h  $PROJECT_ROOT/dist/include/$PROJECT_SHORTNAME/
-cp -R $PROJECT_ROOT/src/*.hpp  $PROJECT_ROOT/dist/include/$PROJECT_SHORTNAME/
+cp -R $PROJECT_ROOT/src/*.h  $PROJECT_ROOT/dist/include/
+cp -R $PROJECT_ROOT/src/*.hpp  $PROJECT_ROOT/dist/include/
 
 cd $PROJECT_ROOT
 tar -czvf $PROJECT_ROOT/$TRIPLE_CROSS.tar.gz dist

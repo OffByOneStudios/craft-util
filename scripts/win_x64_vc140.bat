@@ -69,7 +69,7 @@ COPY %PROJECT_ROOT%\build\Debug\*.lib %PROJECT_ROOT%\dist\lib\%TRIPLE_CROSS%\deb
 COPY %PROJECT_ROOT%\build\Release\*.dll %PROJECT_ROOT%\dist\bin\%TRIPLE_CROSS%\
 COPY %PROJECT_ROOT%\build\Release\*.lib %PROJECT_ROOT%\dist\lib\%TRIPLE_CROSS%\
 
-ROBOCOPY /e %PROJECT_ROOT%\src  %PROJECT_ROOT%\dist\include\%PROJECT_SHORTNAME%\ *.h *.hpp
+ROBOCOPY /e %PROJECT_ROOT%\src  %PROJECT_ROOT%\dist\include\ *.h *.hpp
 
 cd %PROJECT_ROOT%
 7z a -tzip %TRIPLE_CROSS%.zip dist

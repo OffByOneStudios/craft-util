@@ -31,18 +31,16 @@ add_definitions(-DCRAFT_UTIL_DLL
 )
 
 # File Operations
-file(GLOB includes
+file(GLOB_RECURSE includes
   src/*.h
   src/*.hpp
-  src/concurrency/*.h
-  src/concurrency/*.hpp
 )
 
-file(GLOB sources
+file(GLOB_RECURSE sources
   src/*.cpp
 )
 
-file(GLOB tests
+file(GLOB_RECURSE tests
   test/*.cpp
 )
 
@@ -60,7 +58,7 @@ add_library(CraftUtil SHARED
   common.cpp
 )
 
-add_precompiled_header(CraftUtil src/common.h FORCEINCLUDE)
+add_precompiled_header(CraftUtil src/util/common.h FORCEINCLUDE)
 
 add_executable(CraftUtilTests
   ${tests}

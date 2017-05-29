@@ -1,7 +1,7 @@
 //#include "common.h"
 #undef CRAFT_UTIL_DLL
-#include "common.h"
-#include "all.h"
+#include "util/common.h"
+#include "util/all.h"
 
 
 #include <spdlog/spdlog.h>
@@ -28,9 +28,9 @@ go_bandit([](){
 //              auto res = stdext::split("foo.bar.baz", ".");
 //              for(auto i: res)
 //              {
-//                  
+//
 //              }
-              
+
               throw std::exception();
           });
           it("join", [](){
