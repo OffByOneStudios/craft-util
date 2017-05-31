@@ -229,7 +229,7 @@ namespace stdext
 		std::basic_ostringstream<CharType> os;
 		auto it = begin;
 		bool cont = it != end;
-		size_t length = SIZE_T_MAX;
+		size_t length = std::numeric_limits<size_t>::max();
 		while (cont)
 		{
 			length = ((*it).size() < length) ? (*it).size() : length;

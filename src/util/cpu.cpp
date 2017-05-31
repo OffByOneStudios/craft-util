@@ -1,6 +1,9 @@
 #include "common.h"
 #include "cpu.h"
 
+#ifdef win_x64_vc140
+#include "Windows.h"
+#endif
 
 cpu::CPU* _cpu;
 

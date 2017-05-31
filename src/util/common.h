@@ -4,7 +4,9 @@
 #include "defines.h"
 
 #ifdef win_x64_vc140
-#include "Windows.h"
+//#define NOMINMAX
+//#include "Windows.h"
+
 #elif osx_x64_clang
 #include "unistd.h"
 #include <sys/stat.h>
@@ -13,6 +15,7 @@
 #endif
 
 // C++ STD
+#include <limits>
 #include <set>
 #include <string>
 #include <type_traits>
