@@ -65,11 +65,13 @@ target_compile_definitions(CraftUtil PRIVATE CRAFT_UTIL_DLL)
 
 add_precompiled_header(CraftUtil src/util/common.h FORCEINCLUDE)
 
+if(NOT DEFINED CRAFT_ENGINE_SUBDIRECTORY)
 add_executable(CraftUtilTests
   ${tests}
 )
 
 target_link_libraries (CraftUtilTests CraftUtil)
+endif()
 
 # Platform Specific
 if(CRAFT_TRIPLE_CROSS STREQUAL "osx_x64_clang")
