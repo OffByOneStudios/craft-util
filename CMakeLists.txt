@@ -49,7 +49,7 @@ file(GLOB_RECURSE tests
 set(files ${includes} ${sources})
 
 include_directories(
-  ${CMAKE_SOURCE_DIR}/src
+  ${CMAKE_CURRENT_SOURCE_DIR}/src
   ${CRAFT_VENDOR_INCLUDE_DIRECTORY}
 )
 
