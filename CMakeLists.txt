@@ -16,6 +16,7 @@ include(${CRAFT_CMAKE_DIR}/ResolveCraftTripleCross.cmake)
 include(${CRAFT_CMAKE_DIR}/ResolveVendor.cmake)
 include(${CRAFT_CMAKE_DIR}/MakeVSFilters.cmake)
 include (${CRAFT_CMAKE_DIR}/ImportDep.cmake)
+include(${CRAFT_CMAKE_DIR}/MakeVSDocs.cmake)
 
 
 # Use This is you depend on Vendors
@@ -80,4 +81,5 @@ elseif(MSVC)
   set(files ${includes} ${sources} ${docs})
   target_link_libraries(CraftUtil pathcch.lib shlwapi.lib)
   VSFILTERS(${files})
+  GenerateDocs(CraftUtil)
 endif()
