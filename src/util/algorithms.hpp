@@ -205,8 +205,15 @@ namespace stdext
 		::stdext::split(s, std::basic_string<CharType> { split }, out);
 	}
 
-	template<class CharType, class InputIterator>
+	template<class CharType, class InputIterator, 
+		typename std::enable_if<std::is_literal_type<CharType>::value && !std::is_pointer<CharType>::value>::type* = nullptr>
 	inline std::basic_string<CharType> join(CharType separator, InputIterator const& begin, InputIterator const& end)
+	{
+		return join(std::string("") + separator, begin, end);
+	}
+
+	template<class CharType, class InputIterator>
+	inline std::basic_string<CharType> join(std::basic_string<CharType> const& separator, InputIterator const& begin, InputIterator const& end)
 	{
 		std::basic_ostringstream<CharType> os;
 
