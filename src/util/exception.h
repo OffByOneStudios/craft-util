@@ -13,7 +13,7 @@ namespace stdext
 		std::string _msg_fmt;
 
 	public:
-		inline explicit exception(const char* message)
+		/*inline explicit exception(const char* message)
 			: _msg(message)
 			, _inner(*this)
 			, _msg_fmt()
@@ -29,6 +29,22 @@ namespace stdext
 			: _msg(message)
 			, _inner(inner)
 		{
+			_msg_fmt = fmt::format("{0}: {1}", _msg.c_str(), _inner.what());
+		}*/
+
+		inline explicit exception(const std::string& message...)
+			: _inner(*this)
+		{
+			va_list args;
+			_msg = fmt::format(message, args);
+			_msg_fmt = fmt::format("{0}: {1}", _msg.c_str(), _inner.what());
+		}
+
+		inline explicit exception(const std::exception& inner,  const std::string& message...)
+			: _inner(inner)
+		{
+			va_list args;
+			_msg = fmt::format(message, args);
 			_msg_fmt = fmt::format("{0}: {1}", _msg.c_str(), _inner.what());
 		}
 
