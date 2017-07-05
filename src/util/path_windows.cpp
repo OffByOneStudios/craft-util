@@ -759,7 +759,7 @@ void _path_watch_implementation::_main(void)
 		if (!status)
 			continue;
 
-		//craft::engine()->log->trace("[watch] got {0} actions", bytes_written / sizeof(FILE_NOTIFY_INFORMATION));
+		//craft::engine()->log()->trace("[watch] got {0} actions", bytes_written / sizeof(FILE_NOTIFY_INFORMATION));
 
 		FILE_NOTIFY_INFORMATION* ptr = this->buffer;
 
@@ -781,7 +781,7 @@ void _path_watch_implementation::_main(void)
 				entry.action = ptr->Action;
 				_queue.enqueue(entry);
 
-				//craft::engine()->log->trace("[watch] action {0} on file {1}", ptr->Action, file);
+				//craft::engine()->log()->trace("[watch] action {0} on file {1}", ptr->Action, file);
 			}
 
 			if (ptr->NextEntryOffset == 0)
