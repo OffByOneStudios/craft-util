@@ -32,19 +32,19 @@ namespace stdext
 			_msg_fmt = fmt::format("{0}: {1}", _msg.c_str(), _inner.what());
 		}*/
 
-		inline explicit exception(const std::string& message...)
+		template <typename... TArgs>
+		inline explicit exception(const std::string& message, TArgs... args)
 			: _inner(*this)
 		{
-			va_list args;
-			_msg = fmt::format(message, args);
+			_msg = fmt::format(message, args...);
 			_msg_fmt = fmt::format("{0}: {1}", _msg.c_str(), _inner.what());
 		}
 
-		inline explicit exception(const std::exception& inner,  const std::string& message...)
+		template <typename... TArgs>
+		inline explicit exception(const std::exception& inner, const std::string& message, TArgs... args)
 			: _inner(inner)
 		{
-			va_list args;
-			_msg = fmt::format(message, args);
+			_msg = fmt::format(message, args...);
 			_msg_fmt = fmt::format("{0}: {1}", _msg.c_str(), _inner.what());
 		}
 
