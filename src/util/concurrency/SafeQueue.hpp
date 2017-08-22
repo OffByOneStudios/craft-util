@@ -35,6 +35,13 @@ namespace concurrency
 			c.notify_one();
 		}
 
+		inline size_t size()
+		{
+			std::unique_lock<std::mutex> lock(m);
+			auto res = q.size();
+			return res;
+		}
+
 		// Blocks if empty.
 		inline T dequeue(void)
 		{
