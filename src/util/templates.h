@@ -247,6 +247,8 @@ namespace stdext
 		typedef TRight type;
 	};
 
+	// choose between two types
+
 	template <bool flag, typename IsTrue, typename IsFalse>
 	struct choose;
 
@@ -259,4 +261,16 @@ namespace stdext
 	struct choose<false, IsTrue, IsFalse> {
 		typedef IsFalse type;
 	};
+
+	// is the type complete (does it exist)
+	// * https://stackoverflow.com/a/44229779
+	// * https://stackoverflow.com/a/37193089
+
+	template <class T, class = void>
+	struct is_complete : std::false_type
+	{};
+
+	template <class T>
+	struct is_complete< T, decltype(void(sizeof(T))) > : std::true_type
+	{};
 }
