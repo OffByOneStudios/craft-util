@@ -37,7 +37,6 @@ namespace stdext
 			: _inner(*this)
 		{
 			_msg = fmt::format(message, args...);
-			_msg_fmt = fmt::format("{0}: {1}", _msg.c_str(), _inner.what());
 		}
 
 		template <typename... TArgs>
