@@ -11,6 +11,7 @@
 #include "exception.h"
 #include "algorithms.hpp"
 #include "signal.hpp"
+#include "iterators.hpp"
 
 #include "ider.hpp"
 #include "random.h"
