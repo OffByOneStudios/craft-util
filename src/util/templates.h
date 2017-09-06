@@ -247,21 +247,6 @@ namespace stdext
 		typedef TRight type;
 	};
 
-	// choose between two types
-
-	template <bool flag, typename IsTrue, typename IsFalse>
-	struct choose;
-
-	template <typename IsTrue, typename IsFalse>
-	struct choose<true, IsTrue, IsFalse> {
-		typedef IsTrue type;
-	};
-
-	template <typename IsTrue, typename IsFalse>
-	struct choose<false, IsTrue, IsFalse> {
-		typedef IsFalse type;
-	};
-
 	// is the type complete (does it exist)
 	// * https://stackoverflow.com/a/44229779
 	// * https://stackoverflow.com/a/37193089
@@ -273,4 +258,13 @@ namespace stdext
 	template <class T>
 	struct is_complete< T, decltype(void(sizeof(T))) > : std::true_type
 	{};
+
+	// as reference based off of remove_pointer
+	template< class T > struct as_reference { typedef T& type; };
+	template< class T > struct as_reference<T&> { typedef T& type; };
+	template< class T > struct as_reference<T const&> { typedef T const& type; };
+	template< class T > struct as_reference<T*> { typedef T& type; };
+	template< class T > struct as_reference<T const*> { typedef T const& type; };
+	template< class T > struct as_reference<T volatile*> { typedef T& type; };
+	template< class T > struct as_reference<T const volatile*> { typedef T const& type; };
 }
