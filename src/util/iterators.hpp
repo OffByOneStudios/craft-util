@@ -36,8 +36,8 @@ namespace stdext
 
 	template<typename T> struct breadth_first_iterator;
 
-	template<typename T> inline bool operator == (breadth_first_iterator<T> const& this_, breadth_first_iterator<T> const& that_);
-	template<typename T> inline bool operator != (breadth_first_iterator<T> const& this_, breadth_first_iterator<T> const& that_);
+	template<typename T> bool operator == (breadth_first_iterator<T> const& this_, breadth_first_iterator<T> const& that_);
+	template<typename T> bool operator != (breadth_first_iterator<T> const& this_, breadth_first_iterator<T> const& that_);
 
 	template<typename T>
 	struct breadth_first_iterator
@@ -86,12 +86,12 @@ namespace stdext
 	};
 
 	template<typename T>
-	inline bool operator == (breadth_first_iterator<T> const& this_, breadth_first_iterator<T> const& that_)
+	bool operator == (breadth_first_iterator<T> const& this_, breadth_first_iterator<T> const& that_)
 	{
 		return this_._queue.size() == that_._queue.size() && this_._queue == that_._queue;
 	}
 	template<typename T>
-	inline bool operator != (breadth_first_iterator<T> const& this_, breadth_first_iterator<T> const& that_)
+	bool operator != (breadth_first_iterator<T> const& this_, breadth_first_iterator<T> const& that_)
 	{
 		return this_._queue.size() != that_._queue.size() && this_._queue != that_._queue;
 	}
@@ -102,8 +102,8 @@ namespace stdext
 
 	template<typename T> struct depth_first_iterator;
 
-	template<typename T> inline bool operator == (depth_first_iterator<T> const& this_, depth_first_iterator<T> const& that_);
-	template<typename T> inline bool operator != (depth_first_iterator<T> const& this_, depth_first_iterator<T> const& that_);
+	template<typename T> bool operator == (depth_first_iterator<T> const& this_, depth_first_iterator<T> const& that_);
+	template<typename T> bool operator != (depth_first_iterator<T> const& this_, depth_first_iterator<T> const& that_);
 
 	template<typename T>
 	struct depth_first_iterator
@@ -157,12 +157,12 @@ namespace stdext
 	};
 
 	template<typename T>
-	inline bool operator == (depth_first_iterator<T> const& this_, depth_first_iterator<T> const& that_)
+	bool operator == (depth_first_iterator<T> const& this_, depth_first_iterator<T> const& that_)
 	{
 		return this_._stack.size() == that_._stack.size() && this_._stack == that_._stack;
 	}
 	template<typename T>
-	inline bool operator != (depth_first_iterator<T> const& this_, depth_first_iterator<T> const& that_)
+	bool operator != (depth_first_iterator<T> const& this_, depth_first_iterator<T> const& that_)
 	{
 		return this_._stack.size() != that_._stack.size() && this_._stack != that_._stack;
 	}
