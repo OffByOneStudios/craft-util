@@ -24,6 +24,7 @@
 #include <vector>
 #include <queue>
 #include <stack>
+#include <future>
 #include <map>
 
 // INTERNAL
@@ -32,3 +33,5 @@
 //Vendor
 
 #include "spdlog/fmt/fmt.h"
+#define CURL_STATICLIB 
+#include "curl/curl.h"

@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.7)
+project (CraftUtil)
 if(TARGET CraftUtil)
     return()
 endif(TARGET CraftUtil)
@@ -14,24 +15,19 @@ include(${CRAFT_CMAKE_DIR}/ResolveCraftTripleCross.cmake)
 
 
 include(${CRAFT_CMAKE_DIR}/ResolveVendor.cmake)
-include(${CRAFT_CMAKE_DIR}/MakeVSFilters.cmake)
-include (${CRAFT_CMAKE_DIR}/ImportDep.cmake)
-include(${CRAFT_CMAKE_DIR}/MakeVSDocs.cmake)
-
-
 # Use This is you depend on Vendors
 IF(NOT DEFINED CRAFT_ENGINE_VENDOR_DIR)
   MESSAGE(FATAL_ERROR "Could not locate required dependency CRAFT_ENGINE_VENDOR_DIR")
 ENDIF()
 
-
 # External Cmake Deps
 include(${CRAFT_CMAKE_DIR}/PrecompiledHeader.cmake)
+include(${CRAFT_CMAKE_DIR}/MakeVSFilters.cmake)
+include(${CRAFT_CMAKE_DIR}/MakeVSDocs.cmake)
 
-# Preprocessor Defs
-add_definitions(
-    -D${CRAFT_TRIPLE_CROSS}
-)
+# Use This Preprocess Def to Control exports
+add_definitions(-D${CRAFT_TRIPLE_CROSS})
+
 
 # File Operations
 file(GLOB_RECURSE includes
@@ -73,6 +69,9 @@ add_executable(CraftUtilTests
 
 target_link_libraries (CraftUtilTests CraftUtil)
 endif()
+
+#Vendor Dependencies
+include(cmake/vendor/${CRAFT_TRIPLE_CROSS}.cmake)
 
 # Platform Specific
 if(CRAFT_TRIPLE_CROSS STREQUAL "osx_x64_clang")

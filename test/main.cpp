@@ -1,5 +1,5 @@
 //#include "common.h"
-#undef CRAFT_UTIL_DLL
+//#undef CRAFT_UTIL_DLL
 #include "util/common.h"
 #include "util/all.h"
 
@@ -7,6 +7,8 @@
 #include <spdlog/spdlog.h>
 #include <bandit/bandit.h>
 using namespace bandit;
+
+
 
  //Tell bandit there are tests here.
 go_bandit([](){
@@ -40,6 +42,21 @@ go_bandit([](){
               throw std::exception();
           });
       });
+	  describe("fetch_cpp", []() {
+		  it("fetch", []() {
+			  std::function<std::string(void*, size_t)> f = [](void* d, size_t s) {
+				  return std::string((char*)d, s);
+			  };
+			  std::future<std::string> fut = craft::net::fetch(std::string("https://api.chucknorris.io/jokes/random"), f);
+
+			  std::string s = fut.get();
+
+			  if (s.size())
+			  {
+				  printf(s.c_str());
+			  }
+		  });
+	  });
   });
 });
 
