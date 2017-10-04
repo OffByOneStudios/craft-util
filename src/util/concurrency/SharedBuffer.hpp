@@ -104,6 +104,7 @@ namespace concurrency
 
 		inline uint64_t trailing() const
 		{
+			if (_nextMarker == 0) return _write;
 			uint64_t ret = UINT64_MAX;
 			MarkerId count = _nextMarker;
 			for (int i = 0; i < count; i++)
