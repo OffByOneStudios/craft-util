@@ -9,8 +9,4 @@ namespace _impl {
 	bool curl_init = false;
 }}
 
-void craft::net::test()
-{
-	curl_global_init(CURL_GLOBAL_DEFAULT);
-}
 

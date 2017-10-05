@@ -32,10 +32,23 @@ namespace net {
 		}
 	}
 
-	CRAFT_UTIL_EXPORTED void test();
+	enum class HTTPType {
+		GET,
+		POST,
+		PUT,
+		DELET
+	};
+
+	struct FetchOptions {
+		
+		std::map<std::string, std::string> headers;
+		std::string user_agent;
+		HTTPType type;
+		
+	};
 
 	template<typename T>
-	inline std::future<T> craft::net::fetch(std::string url, std::function<T(void*, size_t)> serialize)
+	inline std::future<T> craft::net::fetch(std::string url, FetchOptions opts, std::function<T(void*, size_t)> serialize)
 	{
 		if (!_impl::curl_init)
 		{
@@ -51,7 +64,7 @@ namespace net {
 
 			_impl::CurlBuffer chunk = {};
 
-			curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
+			curl_easy_setopt(curl, CURLOPT_USERAGENT, ((opts.user_agent.size()) ? opts.user_agent.c_str()) : "libcurl-agent/1.0"));
 			curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);
 			curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errstr.data());
 			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &_impl::curl_write);
