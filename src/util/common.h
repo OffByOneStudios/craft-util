@@ -4,9 +4,10 @@
 #include "defines.h"
 
 #ifdef win_x64_vc140
-//#define NOMINMAX
+// Fix terrible windows header
+#define NOMINMAX
+// Windows include
 //#include "Windows.h"
-
 #elif osx_x64_clang
 #include "unistd.h"
 #include <sys/stat.h>

@@ -6,12 +6,13 @@
 #include "values/IdValue.hpp"
 #include "values/IntValue.hpp"
 //#include "values/DecimalValue.hpp"
-//#include "values/FloatValue.hpp"
+#include "values/FloatValue.hpp"
 
 #include "exception.h"
 #include "algorithms.hpp"
 #include "signal.hpp"
 #include "iterators.hpp"
+#include "strings.hpp"
 
 #include "ider.hpp"
 #include "random.h"
