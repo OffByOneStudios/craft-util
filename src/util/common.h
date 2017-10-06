@@ -16,6 +16,7 @@
 #endif
 
 // C++ STD
+#include <fstream>
 #include <limits>
 #include <set>
 #include <string>

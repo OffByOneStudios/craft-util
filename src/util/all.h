@@ -24,5 +24,8 @@
 #include "path.h" // requires "signal.hpp" and conccurrency library
 #include "cpu.h"
 
+// Fs
+#include "fs/fs.hpp"
+
 // Net
 #include "net/fetch.hpp"

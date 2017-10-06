@@ -9,6 +9,19 @@
 using namespace bandit;
 
 
+std::string project_root()
+{
+	std::string here = path::absolute("./");
+	while (!path::exists(path::join(here, "CraftUtil.lock")))
+	{
+		here = path::normalize(path::join(here, ".."));
+		if (here == "/")
+		{
+			throw stdext::exception("Running Tests outside of the repo director structure");
+		}
+	}
+	return here;
+}
 
  //Tell bandit there are tests here.
 go_bandit([](){
@@ -42,7 +55,7 @@ go_bandit([](){
               throw std::exception();
           });
       });
-	  describe("fetch_cpp", []() {
+	  describe("fetch_hpp", []() {
 		  it("fetch", []() {
 			  std::function<std::string(void*, size_t)> f = [](void* d, size_t s) {
 				  return std::string((char*)d, s);
@@ -70,6 +83,27 @@ go_bandit([](){
 			  std::string s = fut.get();
 
  			  if (s.size())
+			  {
+				  printf(s.c_str());
+			  }
+		  });
+	  });
+	  describe("fs_hpp", []() {
+		  it("read", []() {
+			  std::function<std::string(uint8_t[], size_t)> f = [](uint8_t d[], size_t s) {
+				  auto res = std::string((char*)d, s);
+				  delete[] d;
+
+				  return res;
+			  };
+
+			  std::string here = project_root();
+
+			  std::future<std::string> fut = craft::fs::read(path::join(here, "test/main.cpp"), f);
+
+			  std::string s = fut.get();
+
+			  if (s.size())
 			  {
 				  printf(s.c_str());
 			  }
