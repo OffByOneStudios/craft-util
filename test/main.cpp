@@ -47,11 +47,29 @@ go_bandit([](){
 			  std::function<std::string(void*, size_t)> f = [](void* d, size_t s) {
 				  return std::string((char*)d, s);
 			  };
-			  std::future<std::string> fut = craft::net::fetch(std::string("https://api.chucknorris.io/jokes/random"), f);
+
+			  std::string data = "{\n  \"foo\": \"bar\"\n}";
+			  craft::net::FetchOptions opts;
+			  opts.type = craft::net::HTTPType::PUT;
+			  opts.user_agent = "craftengine/test";
+			  opts.headers =
+			  {
+				  { "foo", "Bar Baz" },
+				  { "Content-Type", "application/json"}
+			  };
+			  opts.body = (void*)data.data();
+			  opts.body_size = data.size();
+
+			
+			  std::future<std::string> fut = craft::net::fetch(
+				  std::string("http://localhost:8080/jokes/random"),
+				  opts,
+				  f
+			  );
 
 			  std::string s = fut.get();
 
-			  if (s.size())
+ 			  if (s.size())
 			  {
 				  printf(s.c_str());
 			  }
