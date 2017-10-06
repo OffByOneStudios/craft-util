@@ -35,7 +35,6 @@ namespace net {
 		{
 			CurlBuffer* buf = (CurlBuffer*)userp;
 
-			curl_off_t nread;
 			/* in real-world cases, this would probably get this data differently
 			as this fread() stuff is exactly what the library already would do
 			by default internally */
