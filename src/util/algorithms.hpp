@@ -236,6 +236,8 @@ namespace stdext
 	template<class ContainerType>
 	inline bool starts_with(ContainerType const& longer, ContainerType const& prefix)
 	{
+		if (prefix.end() - prefix.begin() > longer.end() - longer.begin())
+			return false;
 		return std::equal(prefix.begin(), prefix.end(), longer.begin());
 	}
   
