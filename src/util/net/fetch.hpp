@@ -23,7 +23,7 @@ namespace net {
 
 	namespace _impl
 	{
-		CRAFT_UTIL_EXPORTED bool curl_init;
+		CRAFT_UTIL_EXPORTED extern bool curl_init;
 		struct CurlBuffer
 		{
 			char *memory;
@@ -31,7 +31,7 @@ namespace net {
 			size_t offset;
 		};
 
-		static size_t read_callback(void *ptr, size_t size, size_t nmemb, void *userp)
+		inline size_t read_callback(void *ptr, size_t size, size_t nmemb, void *userp)
 		{
 			CurlBuffer* buf = (CurlBuffer*)userp;
 
@@ -46,7 +46,7 @@ namespace net {
 			return write;
 		}
 
-		size_t curl_write(void *contents, size_t size, size_t nmemb, void *userp)
+		inline size_t curl_write(void *contents, size_t size, size_t nmemb, void *userp)
 		{
 			size_t realsize = size * nmemb;
 			_impl::CurlBuffer *mem = (_impl::CurlBuffer *)userp;
@@ -64,7 +64,7 @@ namespace net {
 			return realsize;
 		}
 
-		std::string http_type(HTTPType fs)
+		inline std::string http_type(HTTPType fs)
 		{
 			switch (fs)
 			{
