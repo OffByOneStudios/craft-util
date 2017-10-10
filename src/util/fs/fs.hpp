@@ -1,6 +1,7 @@
 #pragma once
 #include "util/common.h"
 
+#include "util/all.h"
 namespace craft {
 namespace fs {
 

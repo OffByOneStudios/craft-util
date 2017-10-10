@@ -1,6 +1,7 @@
 #pragma once
 #include "util/common.h"
 
+#include "util/exception.h"
 namespace craft {
 namespace net {
 	typedef size_t(*CURL_WRITEFUNCTION_PTR)(void*, size_t, size_t, void*);
@@ -85,7 +86,7 @@ namespace net {
 	
 
 	template<typename ResultType>
-	inline std::future<ResultType> craft::net::fetch(std::string url, FetchOptions opts, std::function<ResultType(void*, size_t)> deserialize)
+	inline std::future<ResultType> fetch(std::string url, FetchOptions opts, std::function<ResultType(void*, size_t)> deserialize)
 	{
 		if (!_impl::curl_init)
 		{
