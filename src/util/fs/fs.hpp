@@ -1,7 +1,7 @@
 #pragma once
 #include "util/common.h"
 
-#include "util/exception.h
+#include "util/exception.h"
 #include "util/threading/threading.h"
 
 namespace craft {
