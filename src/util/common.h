@@ -33,7 +33,7 @@
 #include "signal.hpp"
 
 //Vendor
-
+#include "spdlog/spdlog.h"
 #include "spdlog/fmt/fmt.h"
 #define CURL_STATICLIB 
 #include "curl/curl.h"

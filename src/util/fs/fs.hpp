@@ -1,12 +1,14 @@
 #pragma once
 #include "util/common.h"
 
-#include "util/all.h"
+#include "util/exception.h
+#include "util/threading/threading.h"
+
 namespace craft {
 namespace fs {
 
 	template<typename ResultType>
-	inline std::future<ResultType> read(std::string path, std::function<ResultType(uint8_t*, size_t)> deserialize)
+	inline stdext::future<ResultType> read(std::string path, std::function<ResultType(uint8_t*, size_t)> deserialize)
 	{
 		return std::async(std::launch::async, [=]() 
 		{

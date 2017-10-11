@@ -1,6 +1,7 @@
 #pragma once
 #include "util/common.h"
 
+#include "util/threading/threading.h"
 #include "util/exception.h"
 namespace craft {
 namespace net {
@@ -86,7 +87,7 @@ namespace net {
 	
 
 	template<typename ResultType>
-	inline std::future<ResultType> fetch(std::string url, FetchOptions opts, std::function<ResultType(void*, size_t)> deserialize)
+	inline stdext::future<ResultType> fetch(std::string url, FetchOptions opts, std::function<ResultType(void*, size_t)> deserialize)
 	{
 		if (!_impl::curl_init)
 		{

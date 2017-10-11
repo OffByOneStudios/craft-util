@@ -74,7 +74,7 @@ go_bandit([](){
 			  opts.body_size = data.size();
 
 			
-			  std::future<std::string> fut = craft::net::fetch(
+			  stdext::future<std::string> fut = craft::net::fetch(
 				  std::string("http://localhost:8080/jokes/random"),
 				  opts,
 				  f
@@ -99,7 +99,7 @@ go_bandit([](){
 
 			  std::string here = project_root();
 
-			  std::future<std::string> fut = craft::fs::read(path::join(here, "test/main.cpp"), f);
+			  stdext::future<std::string> fut = craft::fs::read(path::join(here, "test/main.cpp"), f);
 
 			  std::string s = fut.get();
 

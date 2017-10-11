@@ -15,6 +15,7 @@
 #include "strings.hpp"
 
 #include "ider.hpp"
+#include "profiler.hpp"
 #include "random.h"
 
 #include "concurrency/SafeSet.hpp"
@@ -24,8 +25,12 @@
 #include "path.h" // requires "signal.hpp" and conccurrency library
 #include "cpu.h"
 
+// Threading
+#include "threading/threading.h"
+
 // Fs
 #include "fs/fs.hpp"
 
 // Net
 #include "net/fetch.hpp"
+
