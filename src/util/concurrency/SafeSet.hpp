@@ -36,6 +36,12 @@ namespace concurrency
 			s.insert(t);
 		}
 
+		inline bool has(T& t)
+		{
+			std::lock_guard<std::mutex> lock(m);
+			return s.count(t) != 0;
+		}
+
 		inline void erase(T& t)
 		{
 			std::lock_guard<std::mutex> lock(m);
