@@ -76,6 +76,7 @@ include(cmake/vendor/${CRAFT_TRIPLE_CROSS}.cmake)
 # Platform Specific
 if(CRAFT_TRIPLE_CROSS STREQUAL "osx_x64_clang")
   list(APPEND CMAKE_CXX_FLAGS "-std=c++14 -stdlib=libc++ -Wc++11-extensions")
+  target_link_libraries(CraftUtil "-framework Security")
 elseif(MSVC)
   set(files ${includes} ${sources} ${docs})
   target_link_libraries(CraftUtil pathcch.lib shlwapi.lib)

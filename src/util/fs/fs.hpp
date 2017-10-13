@@ -3,6 +3,7 @@
 
 #include "util/exception.h"
 #include "util/threading/threading.h"
+#include "util/path.h"
 
 namespace craft {
 namespace fs {
