@@ -18,7 +18,8 @@ namespace stdext
 		inline bool operator ==(TSelf const& that) const { return this->id == that.id; }
 		inline bool operator !=(TSelf const& that) const { return this->id != that.id; }
 	};
-}
+	
+	template<typename TSelf, typename TId>
+  inline std::ostream & operator<<(std::ostream & s, stdext::IdValue<TSelf, TId> const & v) { s << v.id; return s; }
 
-template<typename TSelf, typename TId>
-inline std::ostream & operator<<(std::ostream & s, stdext::IdValue<TSelf, TId> const & v) { s << v.id; return s; }
+}

@@ -42,7 +42,7 @@ namespace net {
 			by default internally */
 			size_t remaining = buf->size - buf->offset;
 			size_t write = (size * nmemb > remaining) ? remaining : size * nmemb;
-			auto retcode = memcpy(ptr, buf->memory + buf->offset, write);
+			memcpy(ptr, buf->memory + buf->offset, write);
 			buf->offset += write;
 
 			return write;
