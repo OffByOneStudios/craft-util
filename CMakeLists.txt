@@ -73,14 +73,16 @@ endif()
 #Vendor Dependencies
 include(cmake/vendor/${CRAFT_TRIPLE_CROSS}.cmake)
 
+#filters
+set(files ${includes} ${sources} ${docs})
+VSFILTERS(${files})
+
 # Platform Specific
 if(CRAFT_TRIPLE_CROSS STREQUAL "osx_x64_clang")
   list(APPEND CMAKE_CXX_FLAGS "-std=c++14 -stdlib=libc++ -Wc++11-extensions")
   target_link_libraries(CraftUtil "-framework Security")
 elseif(MSVC)
-  set(files ${includes} ${sources} ${docs})
   target_link_libraries(CraftUtil pathcch.lib shlwapi.lib)
-  VSFILTERS(${files})
   GenerateDocs(CraftUtil)
 else()
   list(APPEND CMAKE_CXX_FLAGS "-std=gnu++17 -pthread")
