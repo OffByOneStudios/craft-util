@@ -61,140 +61,100 @@ std::string project_root()
 	return here;
 }
 
- //Tell bandit there are tests here.
-go_bandit([](){
-  describe("util_dll", [](){
-      describe("algorithms_hpp", [](){
-          it("topological_sort", [](){
-              throw std::exception();
-          });
-          it("trim", [](){
-              return stdext::trim(" FF ") == "FF";
-          });
-          it("ltrim", [](){
-              return stdext::trim(" FF") == "FF";
-          });
-          it("rtrim", [](){
-              return stdext::trim("FF ") == "FF";
-          });
-          it("split", [](){
-//              auto res = stdext::split("foo.bar.baz", ".");
-//              for(auto i: res)
-//              {
-//
-//              }
+//Tell bandit there are tests here.
+go_bandit([]() {
+	describe("util_dll", []() {
+		describe("algorithms_hpp", []() {
+			it("topological_sort", []() {
+				throw std::exception();
+			});
+			it("trim", []() {
+				return stdext::trim(" FF ") == "FF";
+			});
+			it("ltrim", []() {
+				return stdext::trim(" FF") == "FF";
+			});
+			it("rtrim", []() {
+				return stdext::trim("FF ") == "FF";
+			});
+			it("split", []() {
+				//              auto res = stdext::split("foo.bar.baz", ".");
+				//              for(auto i: res)
+				//              {
+				//
+				//              }
 
-              throw std::exception();
-          });
-          it("join", [](){
-              throw std::exception();
-          });
-          it("longest_common_prefix", [](){
-              throw std::exception();
-          });
-      });
-	  describe("fetch_hpp", []() {
-		  it("fetch", []() {
-			  std::function<std::string(void*, size_t)> f = [](void* d, size_t s) {
-				  return std::string((char*)d, s);
-			  };
+				throw std::exception();
+			});
+			it("join", []() {
+				throw std::exception();
+			});
+			it("longest_common_prefix", []() {
+				throw std::exception();
+			});
+		});
+		describe("fetch_hpp", []() {
+			it("fetch", []() {
+				std::function<std::string(void*, size_t)> f = [](void* d, size_t s) {
+					return std::string((char*)d, s);
+				};
 
-			  std::string data = "{\n  \"foo\": \"bar\"\n}";
-			  craft::net::HTTPRequest opts;
-			  opts.type = craft::net::HTTPType::PUT;
-			  opts.user_agent = "craftengine/test";
-			  opts.headers =
-			  {
-				  { "foo", "Bar Baz" },
-				  { "Content-Type", "application/json"}
-			  };
-			  opts.body = (void*)data.data();
-			  opts.body_size = data.size();
+				std::string data = "{\n  \"foo\": \"bar\"\n}";
+				craft::net::HTTPRequest opts;
+				opts.type = craft::net::HTTPType::PUT;
+				opts.user_agent = "craftengine/test";
+				opts.headers =
+				{
+					{ "foo", "Bar Baz" },
+					{ "Content-Type", "application/json"}
+				};
+				opts.body = (void*)data.data();
+				opts.body_size = data.size();
 
-			
-			  stdext::future<std::string> fut = craft::net::fetch(
-				  std::string("http://localhost:8080/jokes/random"),
-				  opts,
-				  f
-			  );
 
-			  std::string s = fut.get();
+				stdext::future<std::string> fut = craft::net::fetch(
+					std::string("http://localhost:8080/jokes/random"),
+					opts,
+					f
+				);
 
- 			  if (s.size())
-			  {
-				  printf("%s\n", s.c_str());
-			  }
-		  });
-	  });
-	  describe("fs_hpp", []() {
-		  it("read", []() {
-			  std::function<std::string(uint8_t[], size_t)> f = [](uint8_t d[], size_t s) {
-				  auto res = std::string((char*)d, s);
-				  delete[] d;
+				std::string s = fut.get();
 
-				  return res;
-			  };
+				if (s.size())
+				{
+					printf("%s\n", s.c_str());
+				}
+			});
+		});
+		describe("fs_hpp", []() {
+			it("read", []() {
+				std::function<std::string(uint8_t[], size_t)> f = [](uint8_t d[], size_t s) {
+					auto res = std::string((char*)d, s);
+					delete[] d;
 
-			  std::string here = project_root();
+					return res;
+				};
 
-			  stdext::future<std::string> fut = craft::fs::read(path::join(here, "test/main.cpp"), f);
+				std::string here = project_root();
 
-			  std::string s = fut.get();
+				stdext::future<std::string> fut = craft::fs::read(path::join(here, "test/main.cpp"), f);
 
-			  if (s.size())
-			  {
-				  printf("%s\n", s.c_str());
-			  }
-		  });
-	  });
-  });
+				std::string s = fut.get();
+
+				if (s.size())
+				{
+					printf("%s\n", s.c_str());
+				}
+			});
+		});
+	});
 });
 
 int main(int argc, char const *argv[]) {
 	console = spdlog::stdout_color_mt("console");
 
-  auto serve = new craft::net::TcpServer("", 6112, 100, [](int socket) {
-		std::string buf(8192, '\0');
-		int _read = recv(socket, (char*)buf.data(), 8192, 0);
-
-		if (_read < 0)
-		{
-			console->error("Error reading from Socket.");
-			return;
-		}
-		else if (_read == 0)
-		{
-			console->error("Unexpected Client Disconnect");
-			return;
-		}
-		std::string resp;
-		try
-		{
-			craft::net::HTTPRequest req = craft::net::parse_request(buf.data(), _read);
-			resp = fmt::format("{0}\r\n{1}\r\n\r\n{2}",
-				"HTTP / 1.0 200 OK",
-				"Content-Type: text/plain",
-				"OK!");
-		}
-		catch(stdext::exception e)
-		{
-			resp = fmt::format("{0}\r\n{1}\r\n\r\n{2}",
-				"HTTP / 1.0 400 Bad Request",
-				"Content-Type: text/plain",
-				"Ya Goofed!");
-		}
-
-		auto sres = send(socket, resp.data(), resp.size(), 0);
-		if (sres == SOCKET_ERROR)
-		{
-			//auto err = WSAGetLastError();
-			//auto s = GetLastErrorStdStr(WSAGetLastError());
-			console->error("Unable to Send:");
-		}
-
-	});
-	serve->start();
-
-	serve->serve_forever();
-  //return bandit::run(argc, (char**)argv);
+	/*craft::net::HttpServer server(console, 6112);
+	server.init();
+	server.serve_forever();*/
+	//return bandit::run(argc, (char**)argv);
 }

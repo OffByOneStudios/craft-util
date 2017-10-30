@@ -63,4 +63,5 @@ namespace net {
   
   CRAFT_UTIL_EXPORTED HTTPRequest parse_request(const char* data, size_t length);
   CRAFT_UTIL_EXPORTED SerializedHttpRequest serialize_request(HTTPRequest& req);
+
 }}
