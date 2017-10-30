@@ -154,8 +154,8 @@ int main(int argc, char const *argv[]) {
 	console = spdlog::stdout_color_mt("console");
 
   auto serve = new craft::net::TcpServer("", 6112, 100, [](int socket) {
-		std::string buf(2048, '\0');
-		int _read = recv(socket, (char*)buf.data(), 2048, 0);
+		std::string buf(8192, '\0');
+		int _read = recv(socket, (char*)buf.data(), 8192, 0);
 
 		if (_read < 0)
 		{
@@ -167,11 +167,22 @@ int main(int argc, char const *argv[]) {
 			console->error("Unexpected Client Disconnect");
 			return;
 		}
-		console->info("\n{0}\n", buf);
-		std::string resp = fmt::format("{0}\r\n{1}\r\n\r\n{2}",
-			"HTTP / 1.0 200 OK",
-			"Content-Type: text/plain",
-			"Ya Goofed!");
+		std::string resp;
+		try
+		{
+			craft::net::HTTPRequest req = craft::net::parse_request(buf.data(), _read);
+			resp = fmt::format("{0}\r\n{1}\r\n\r\n{2}",
+				"HTTP / 1.0 200 OK",
+				"Content-Type: text/plain",
+				"OK!");
+		}
+		catch(stdext::exception e)
+		{
+			resp = fmt::format("{0}\r\n{1}\r\n\r\n{2}",
+				"HTTP / 1.0 400 Bad Request",
+				"Content-Type: text/plain",
+				"Ya Goofed!");
+		}
 
 		auto sres = send(socket, resp.data(), resp.size(), 0);
 		if (sres == SOCKET_ERROR)

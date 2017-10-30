@@ -36,3 +36,4 @@
 #include "spdlog/fmt/fmt.h"
 #define CURL_STATICLIB
 #include "curl/curl.h"
+#include "h2o/picohttpparser.h"
