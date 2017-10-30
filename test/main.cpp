@@ -100,7 +100,7 @@ go_bandit([](){
 			  };
 
 			  std::string data = "{\n  \"foo\": \"bar\"\n}";
-			  craft::net::FetchOptions opts;
+			  craft::net::HTTPRequest opts;
 			  opts.type = craft::net::HTTPType::PUT;
 			  opts.user_agent = "craftengine/test";
 			  opts.headers =
@@ -122,7 +122,7 @@ go_bandit([](){
 
  			  if (s.size())
 			  {
-				  printf(s.c_str());
+				  printf("%s\n", s.c_str());
 			  }
 		  });
 	  });
@@ -153,7 +153,7 @@ go_bandit([](){
 int main(int argc, char const *argv[]) {
 	console = spdlog::stdout_color_mt("console");
 
-	auto serve = new craft::TcpServer("", 6112, 100, [](int socket) {
+  auto serve = new craft::net::TcpServer("", 6112, 100, [](int socket) {
 		std::string buf(2048, '\0');
 		int _read = recv(socket, (char*)buf.data(), 2048, 0);
 

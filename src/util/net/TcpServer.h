@@ -12,7 +12,7 @@
 
 
 namespace craft {
-
+namespace net {
 	class TcpServer
 	{
 		// Platform Specific
@@ -37,4 +37,4 @@ namespace craft {
 		CRAFT_UTIL_EXPORTED void stop();
 		CRAFT_UTIL_EXPORTED void serve_forever();
 	};
-}
+}}

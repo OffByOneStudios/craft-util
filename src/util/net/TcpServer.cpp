@@ -23,7 +23,7 @@
 
 
 using namespace craft;
-
+using namespace craft::net;
 
 #ifdef win_x64_vc140
 std::string GetLastErrorStdStr(DWORD error)

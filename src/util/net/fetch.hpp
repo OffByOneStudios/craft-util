@@ -3,25 +3,11 @@
 
 #include "util/threading/threading.h"
 #include "util/exception.h"
+#include "http.h"
+
 namespace craft {
 namespace net {
 	typedef size_t(*CURL_WRITEFUNCTION_PTR)(void*, size_t, size_t, void*);
-
-	enum class HTTPType {
-		GET,
-		POST,
-		PUT,
-		DELET
-	};
-
-	struct FetchOptions {
-
-		std::map<std::string, std::string> headers;
-		std::string user_agent;
-		HTTPType type;
-		void* body;
-		size_t body_size;
-	};
 
 	namespace _impl
 	{
@@ -84,17 +70,17 @@ namespace net {
 		}
 	}
 
-	
+
 
 	template<typename ResultType>
-	inline stdext::future<ResultType> fetch(std::string url, FetchOptions opts, std::function<ResultType(void*, size_t)> deserialize)
+	inline stdext::future<ResultType> fetch(std::string url, HTTPRequest opts, std::function<ResultType(void*, size_t)> deserialize)
 	{
 		if (!_impl::curl_init)
 		{
 			curl_global_init(CURL_GLOBAL_DEFAULT);
 			_impl::curl_init = true;
 		}
-		return std::async(std::launch::async, [=]() 
+		return std::async(std::launch::async, [=]()
 		{
 			std::string errstr(CURL_ERROR_SIZE, 0);
 			curl_slist *list = nullptr;
