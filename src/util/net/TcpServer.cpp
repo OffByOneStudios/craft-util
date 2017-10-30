@@ -69,14 +69,16 @@ TcpServer::TcpServer(std::string node, int service, int maxconn, std::function<v
 
 void TcpServer::start()
 {
+	#ifdef win_x64_vc140
 	std::call_once(wsapi, []() {
-		WSADATA wsaData;
-		auto iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-		if (iResult)
-		{
-			throw stdext::exception("Fatal: Failed to Initialize Winsock");
-		}
-	});
+    WSADATA wsaData;
+    auto iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+    if (iResult)
+    {
+      throw stdext::exception("Fatal: Failed to Initialize Winsock");
+    }
+  });
+	#endif
 	addrinfo *result, *ptr, hints; result = nullptr; ptr = nullptr;
 	int listenfd = 0;
 	hints = {};
@@ -87,7 +89,8 @@ void TcpServer::start()
 	hints.ai_flags = AI_PASSIVE;
 
 	char port[5];
-	itoa(_service, port, 10);
+	sprintf(port, "%d", _service);
+	
 	if (getaddrinfo((_node.size()) ? _node.c_str() : nullptr, port, &hints, &result) != 0)
 	{
 		throw stdext::exception("Could not resolve host");
@@ -124,12 +127,16 @@ void TcpServer::start()
 
 		while (this->running) {
 			sockaddr clientaddr = {};
-			socklen_t addrlen = 0;
+			socklen_t addrlen = sizeof(sockaddr);
 
-			auto client = accept(listenfd, &clientaddr, nullptr);
+      auto client = accept(listenfd, &clientaddr, &addrlen);
 			if (client == ACCEPT_FAIL)
 			{
-				auto s = GetLastErrorStdStr(WSAGetLastError());
+				#ifdef win_x64_vc140
+        auto s = GetLastErrorStdStr(WSAGetLastError());
+        #else
+        auto s = strerror(errno);
+        #endif
 				throw stdext::exception("This Socket is Borked Yo! I'm Closing it, {0}", s);
 			}
 			queue.push_back(std::async([=]() {

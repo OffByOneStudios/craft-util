@@ -176,9 +176,9 @@ int main(int argc, char const *argv[]) {
 		auto sres = send(socket, resp.data(), resp.size(), 0);
 		if (sres == SOCKET_ERROR)
 		{
-			auto err = WSAGetLastError();
-			auto s = GetLastErrorStdStr(WSAGetLastError());
-			console->error("Unable to Send: {0}", s);
+			//auto err = WSAGetLastError();
+			//auto s = GetLastErrorStdStr(WSAGetLastError());
+			console->error("Unable to Send:");
 		}
 
 	});
