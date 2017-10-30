@@ -6,7 +6,45 @@
 
 #include <spdlog/spdlog.h>
 #include <bandit/bandit.h>
+
+#ifndef SOCKET_ERROR
+#define SOCKET_ERROR -1
+#endif
+
+
+#ifdef win_x64_vc140
+std::string GetLastErrorStdStr(DWORD error)
+{
+	if (error)
+	{
+		LPVOID lpMsgBuf;
+		DWORD bufLen = FormatMessage(
+			FORMAT_MESSAGE_ALLOCATE_BUFFER |
+			FORMAT_MESSAGE_FROM_SYSTEM |
+			FORMAT_MESSAGE_IGNORE_INSERTS,
+			NULL,
+			error,
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+			(LPTSTR)&lpMsgBuf,
+			0, NULL);
+		if (bufLen)
+		{
+			LPCSTR lpMsgStr = (LPCSTR)lpMsgBuf;
+			std::string result(lpMsgStr, lpMsgStr + bufLen);
+
+			LocalFree(lpMsgBuf);
+
+			return result;
+		}
+	}
+	return std::string();
+}
+#endif // win_x64_vc140
+
+
 using namespace bandit;
+
+std::shared_ptr<spdlog::logger> console;
 
 
 std::string project_root()
@@ -105,7 +143,7 @@ go_bandit([](){
 
 			  if (s.size())
 			  {
-				  printf(s.c_str());
+				  printf("%s\n", s.c_str());
 			  }
 		  });
 	  });
@@ -113,5 +151,39 @@ go_bandit([](){
 });
 
 int main(int argc, char const *argv[]) {
-  return bandit::run(argc, (char**)argv);
+	console = spdlog::stdout_color_mt("console");
+
+	auto serve = new craft::TcpServer("", 6112, 100, [](int socket) {
+		std::string buf(2048, '\0');
+		int _read = recv(socket, (char*)buf.data(), 2048, 0);
+
+		if (_read < 0)
+		{
+			console->error("Error reading from Socket.");
+			return;
+		}
+		else if (_read == 0)
+		{
+			console->error("Unexpected Client Disconnect");
+			return;
+		}
+		console->info("\n{0}\n", buf);
+		std::string resp = fmt::format("{0}\r\n{1}\r\n\r\n{2}",
+			"HTTP / 1.0 200 OK",
+			"Content-Type: text/plain",
+			"Ya Goofed!");
+
+		auto sres = send(socket, resp.data(), resp.size(), 0);
+		if (sres == SOCKET_ERROR)
+		{
+			auto err = WSAGetLastError();
+			auto s = GetLastErrorStdStr(WSAGetLastError());
+			console->error("Unable to Send: {0}", s);
+		}
+
+	});
+	serve->start();
+
+	serve->serve_forever();
+  //return bandit::run(argc, (char**)argv);
 }
