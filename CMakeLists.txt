@@ -9,7 +9,6 @@ include(cmake/ResolveCraftRoot.cmake)
 # This is mandatory
 include(cmake/ResolveCraftCmake.cmake)
 
-MESSAGE(STATUS "CRAFT_CMAKE_DIR " ${CRAFT_CMAKE_DIR})
 # Use This To Support Multiplatforms or to use the Vendor Repo.
 include(${CRAFT_CMAKE_DIR}/ResolveCraftTripleCross.cmake)
 
