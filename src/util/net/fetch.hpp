@@ -52,17 +52,17 @@ namespace net {
 			return realsize;
 		}
 
-		inline std::string http_type(HTTPType fs)
+		inline std::string http_type(HTTPMethod fs)
 		{
 			switch (fs)
 			{
-			case HTTPType::GET:
+			case HTTPMethod::GET:
 				return "GET";
-			case HTTPType::POST:
+			case HTTPMethod::POST:
 				return "POST";
-			case HTTPType::PUT:
+			case HTTPMethod::PUT:
 				return "PUT";
-			case HTTPType::DELET:
+			case HTTPMethod::DELET:
 				return "DELETE";
 			default:
 				return "GET";

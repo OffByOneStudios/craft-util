@@ -1,16 +1,6 @@
 #pragma once
 #include "util/common.h"
 
-#ifdef win_x64_vc140
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#else
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <netdb.h>
-#endif
-
-
 namespace craft {
 namespace net {
 	class TcpServer

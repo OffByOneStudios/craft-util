@@ -5,27 +5,27 @@ using namespace craft;
 using namespace craft::net;
 
 
-HTTPType _method_for(const char* str, size_t length)
+HTTPMethod _method_for(const char* str, size_t length)
 {
 	if (strncmp("GET", str, length) == 0)
 	{
-		return HTTPType::GET;
+		return HTTPMethod::GET;
 	}
 	else if (strncmp("POST", str, length) == 0)
 	{
-		return HTTPType::POST;
+		return HTTPMethod::POST;
 	}
 	else if (strncmp("PUT", str, length) == 0)
 	{
-		return HTTPType::PUT;
+		return HTTPMethod::PUT;
 	}
 	else if (strncmp("DELETE", str, length) == 0)
 	{
-		return HTTPType::DELET;
+		return HTTPMethod::DELET;
 	}
 	else
 	{
-		return HTTPType::GET;
+		return HTTPMethod::GET;
 	}
 }
 
@@ -67,9 +67,4 @@ HTTPRequest craft::net::parse_request(const char* data, size_t length)
 	delete[] headers_buffer;
 
 	return res;
-}
-
-SerializedHttpRequest craft::net::serialize_request(HTTPRequest& req)
-{
-	return SerializedHttpRequest();
 }
