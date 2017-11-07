@@ -101,7 +101,7 @@ go_bandit([]() {
 
 				std::string data = "{\n  \"foo\": \"bar\"\n}";
 				craft::net::HTTPRequest opts;
-				opts.type = craft::net::HTTPType::PUT;
+				opts.type = craft::net::HTTPMethod::PUT;
 				opts.user_agent = "craftengine/test";
 				opts.headers =
 				{
