@@ -11,7 +11,7 @@ namespace stdext
 		inline IdValue(TId const& v) : id(v) { }
 		inline explicit operator TId() const { return id; }
 
-		inline TSelf increment() { TId v = id; id++; return v; }
+		inline TSelf increment() { id++; TId v = id; return v; }
 
 		inline bool operator <(TSelf const& that) const { return this->id < that.id; }
 		inline bool operator >(TSelf const& that) const { return this->id > that.id; }

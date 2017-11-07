@@ -7,10 +7,27 @@
 using namespace craft;
 using namespace craft::net;
 
+#ifdef win_x64_vc140
+#define STAHP_CLIENT SD_BOTH
+#define SOCKET_FAIL INVALID_SOCKET
+#define ACCEPT_FAIL INVALID_SOCKET
+#define LISTEN_ERROR SOCKET_ERROR
+#define BIND_ERROR SOCKET_ERROR
+#define SEND_ERROR SOCKET_ERROR
+#define CLOSE_FUNCTION(s) ((closesocket(s)))
+#else
+#define STAHP_CLIENT SHUT_RDWR
+#define SOCKET_FAIL -1
+#define ACCEPT_FAIL -1
+#define BIND_ERROR -1
+#define LISTEN_ERROR -1
+#define SEND_ERROR -1
+#define CLOSE_FUNCTION(s) ((close(s)))
+#endif
 
 HttpServer::HttpServer(std::shared_ptr<spdlog::logger> logger, int port)
-	: _logger(logger)
-	, _port(port)
+	: _port(port)
+	, _logger(logger)
 {
 
 }
@@ -49,7 +66,7 @@ void HttpServer::init()
 		}
 
 		auto sres = send(socket, resp.data(), resp.size(), 0);
-		if (sres == SOCKET_ERROR)
+		if (sres == SEND_ERROR)
 		{
 			//auto err = WSAGetLastError();
 			//auto s = GetLastErrorStdStr(WSAGetLastError());

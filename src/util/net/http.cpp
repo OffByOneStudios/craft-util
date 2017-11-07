@@ -34,7 +34,7 @@ HTTPRequest craft::net::parse_request(const char* data, size_t length)
 	HTTPRequest res;
 	int body_pos;
 	const char *method, *path;
-	size_t buflen = 0, prevbuflen = 0, method_len, path_len, num_headers;
+	size_t prevbuflen = 0, method_len, path_len, num_headers;
 	int minor_version;
 	phr_header* headers_buffer = new phr_header[128];
 	num_headers = 128;
