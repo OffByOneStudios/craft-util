@@ -170,6 +170,43 @@ std::string path::filename(std::string const& path)
   }
 }
 
+void path::make_directory(std::string const&path)
+{
+	if (path::exists(path))
+	{
+		throw stdext::exception("Path Exists");
+	}
+	impl::string i_path = impl::to(path);
+	auto res = mkdir(i_path.c_str(), 0664);
+	if (!res)
+	{
+		auto err = GetLastError();
+		if (ERROR_PATH_NOT_FOUND == err)
+		{
+			throw stdext::exception("One or more intermediate directories do not exist. call path::ensure_directory instead");
+		}
+
+	}
+}
+
+void path::ensure_directory(std::string const& path)
+{
+	auto d = path::dir(path::normalize(path));
+	if (path::exists(d)) return;
+
+	std::vector<std::string> parts;
+	stdext::split(d, "/", std::back_inserter(parts));
+	std::string p = path::absolute("./");
+	for (auto part : parts)
+	{
+		p = path::join(p, part);
+		if (!path::exists(p))
+		{
+			path::make_directory(p);
+		}
+	}
+}
+
 std::string path::extname(std::string const& path)
 {
     std::string i_path = path::normalize(path);

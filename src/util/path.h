@@ -69,9 +69,10 @@ namespace path
 	CRAFT_UTIL_EXPORTED std::string dir(std::string const& path);
 
 	//
-	// File System functions section
+	// Ensure a directory exists
 	//
-
+	CRAFT_UTIL_EXPORTED void ensure_directory(std::string const& path);
+	CRAFT_UTIL_EXPORTED void make_directory(std::string const& path);
 	// Checks if a path exists (uses FS).
 	//
 	// Only checks for *exactly* the path requested, e.g. checks for either a dir or a file.

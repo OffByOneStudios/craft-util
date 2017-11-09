@@ -2,6 +2,8 @@
 #if defined(_WIN32)
 #include "path.h"
 
+#include "algorithms.hpp"
+#include "exception.h"
 /* T:
 This implementation uses wide (`*W` rather than `*A`) functions for all features. The engine's
 strings are expect to be in UTF8 unicode at all times, we define conversion helpers for this
@@ -507,6 +509,43 @@ std::string path::relative(std::string const& path_with_relative, std::string co
 		if (i_left[counter] == '\\')
 			counter++;
 		return impl::from(i_left.substr(counter));
+	}
+}
+
+void path::make_directory(std::string const&path)
+{
+	if (path::exists(path))
+	{
+		throw stdext::exception("Path Exists");
+	}
+	impl::string i_path = impl::to(path);
+	auto res = CreateDirectoryW(i_path.c_str(), NULL);
+	if (!res)
+	{
+		auto err = GetLastError();
+		if (ERROR_PATH_NOT_FOUND == err)
+		{
+			throw stdext::exception("One or more intermediate directories do not exist. call path::ensure_directory instead");
+		}
+
+	}
+}
+
+void path::ensure_directory(std::string const& path)
+{
+	auto d = path::dir(path::normalize(path));
+	if (path::exists(d)) return;
+
+	std::vector<std::string> parts;
+	stdext::split(d, "\\", std::back_inserter(parts));
+	std::string p = path::absolute(".\\");
+	for (auto part : parts)
+	{
+		p = path::join(p, part);
+		if (!path::exists(p))
+		{
+			path::make_directory(p);
+		}
 	}
 }
 
