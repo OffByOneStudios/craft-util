@@ -219,8 +219,9 @@ namespace stdext
 		::stdext::split(s, std::basic_string<CharType> { split }, out);
 	}
 
+
 	template<class CharType, class InputIterator>
-	inline std::basic_string<CharType> join(std::basic_string<CharType> const& separator, InputIterator const& begin, InputIterator const& end)
+	inline std::basic_string<CharType> join(std::basic_string<CharType> const& separator, InputIterator const& begin, InputIterator const& end, std::function <std::basic_string<CharType>(InputIterator const&)> transform)
 	{
 		std::basic_ostringstream<CharType> os;
 
@@ -228,7 +229,7 @@ namespace stdext
 		bool cont = it != end;
 		while (cont)
 		{
-			os << *it;
+			os << transform(it);
 
 			++it;
 			cont = it != end;
@@ -237,13 +238,30 @@ namespace stdext
 		}
 		return os.str();
 	}
-	
+
 	template<class CharType, class InputIterator,
 		typename std::enable_if<std::is_literal_type<CharType>::value && !std::is_pointer<CharType>::value>::type* = nullptr>
-	inline std::basic_string<CharType> join(CharType separator, InputIterator const& begin, InputIterator const& end)
+		inline std::basic_string<CharType> join(std::basic_string<CharType> const& separator, InputIterator const& begin, InputIterator const& end)
 	{
-		return join(std::string("") + separator, begin, end);
+		return join<CharType, InputIterator>(std::basic_string<CharType>("") + separator, begin, end, 
+			[](InputIterator it) -> std::basic_string<CharType>  {return *it; });
 	}
+
+	template<class CharType, class InputIterator,
+		typename std::enable_if<std::is_literal_type<CharType>::value && !std::is_pointer<CharType>::value>::type* = nullptr>
+		inline std::basic_string<CharType> join(CharType separator, InputIterator const& begin, InputIterator const& end, std::function<CharType(InputIterator)> transform)
+	{
+		return join(std::basic_string<CharType>("") + separator, begin, end, transform);
+	}
+
+	template<class CharType, class InputIterator,
+		typename std::enable_if<std::is_literal_type<CharType>::value && !std::is_pointer<CharType>::value>::type* = nullptr>
+		inline std::basic_string<CharType> join(CharType separator, InputIterator const& begin, InputIterator const& end)
+	{
+		return join<CharType, InputIterator>(std::basic_string<CharType>("") + separator, begin, end, 
+			[](InputIterator it) -> std::basic_string<CharType> {return *it; });
+	}
+
 
 	template<class ContainerType>
 	inline bool starts_with(ContainerType const& longer, ContainerType const& prefix)
