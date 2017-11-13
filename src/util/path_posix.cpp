@@ -2,6 +2,9 @@
 #if !defined(_WIN32)
 #include "path.h"
 
+#include "algorithms.hpp"
+#include "exception.h"
+
 using namespace path;
 
 std::string path::join(std::string const& first, std::string const& second)
@@ -176,15 +179,18 @@ void path::make_directory(std::string const&path)
 	{
 		throw stdext::exception("Path Exists");
 	}
-	impl::string i_path = impl::to(path);
-	auto res = mkdir(i_path.c_str(), 0664);
+
+	auto res = mkdir(path.c_str(), 0664);
 	if (!res)
 	{
-		auto err = GetLastError();
-		if (ERROR_PATH_NOT_FOUND == err)
+		if (ENOENT == res)
 		{
 			throw stdext::exception("One or more intermediate directories do not exist. call path::ensure_directory instead");
 		}
+    else
+    {
+      throw stdext::exception("Unimplemented mkdir Error");
+    }
 
 	}
 }

@@ -1,6 +1,8 @@
 #pragma once
 #include "common.h"
 
+#include "exception.h"
+
 namespace stdext
 {
 	//
@@ -243,7 +245,7 @@ namespace stdext
 		typename std::enable_if<std::is_literal_type<CharType>::value && !std::is_pointer<CharType>::value>::type* = nullptr>
 		inline std::basic_string<CharType> join(std::basic_string<CharType> const& separator, InputIterator const& begin, InputIterator const& end)
 	{
-		return join<CharType, InputIterator>(std::basic_string<CharType>("") + separator, begin, end, 
+		return join<CharType, InputIterator>(std::basic_string<CharType>("") + separator, begin, end,
 			[](InputIterator it) -> std::basic_string<CharType>  {return *it; });
 	}
 
@@ -258,7 +260,7 @@ namespace stdext
 		typename std::enable_if<std::is_literal_type<CharType>::value && !std::is_pointer<CharType>::value>::type* = nullptr>
 		inline std::basic_string<CharType> join(CharType separator, InputIterator const& begin, InputIterator const& end)
 	{
-		return join<CharType, InputIterator>(std::basic_string<CharType>("") + separator, begin, end, 
+		return join<CharType, InputIterator>(std::basic_string<CharType>("") + separator, begin, end,
 			[](InputIterator it) -> std::basic_string<CharType> {return *it; });
 	}
 
@@ -270,7 +272,7 @@ namespace stdext
 			return false;
 		return std::equal(prefix.begin(), prefix.end(), longer.begin());
 	}
-  
+
 	template<class InputIterator, class CharType = typename std::iterator_traits<InputIterator>::value_type::value_type>
 	inline std::basic_string<CharType> longest_common_prefix(InputIterator const& begin, InputIterator const& end, size_t offset = 0)
 	{
