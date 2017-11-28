@@ -50,6 +50,7 @@ set(LibSources
 	src/util/algorithms.hpp
   src/util/all.h
   src/util/argparse.hpp
+  src/util/basen.hpp
   src/util/common.h
   src/util/cpu.cpp
   src/util/cpu.h
