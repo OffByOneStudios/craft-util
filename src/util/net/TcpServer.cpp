@@ -90,7 +90,7 @@ void TcpServer::start()
 	#endif
 	addrinfo *result, *ptr, hints; result = nullptr; ptr = nullptr;
 	int listenfd = 0;
-	hints = {};
+	memset((void*)&hints, 0, sizeof(addrinfo));
 
 	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
@@ -135,7 +135,7 @@ void TcpServer::start()
 		std::vector<std::future<void>> queue;
 
 		while (this->running) {
-			sockaddr clientaddr = {};
+			sockaddr clientaddr; memset(&clientaddr, 0, sizeof(sockaddr));
 			socklen_t addrlen = sizeof(sockaddr);
 
       auto client = accept(listenfd, &clientaddr, &addrlen);

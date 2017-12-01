@@ -23,6 +23,17 @@ namespace net {
     void* body;
     size_t body_size;
 	bool follow_redirects;
+
+	inline HTTPRequest()
+	{
+		headers = std::map<std::string, std::string>();
+		user_agent = "craft/util";
+		path = "/";
+		type = HTTPMethod::GET;
+		body = nullptr;
+		body_size = 0;
+		follow_redirects = false;
+	}
   };
   
 

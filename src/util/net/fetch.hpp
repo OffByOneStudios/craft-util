@@ -17,6 +17,13 @@ namespace net {
 			char *memory;
 			size_t size;
 			size_t offset;
+
+			inline CurlBuffer()
+			{
+				memory = 0;
+				size = 0;
+				offset = 0;
+			}
 		};
 
 		inline size_t read_callback(void *ptr, size_t size, size_t nmemb, void *userp)
@@ -87,7 +94,7 @@ namespace net {
 			CURL *curl = curl_easy_init();
 			curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
-			_impl::CurlBuffer chunk = {};
+			_impl::CurlBuffer chunk, readbuf;
 
 			if (opts.headers.size())
 			{
@@ -100,8 +107,7 @@ namespace net {
 			}
 
 			if (opts.body_size)
-			{
-				_impl::CurlBuffer readbuf = {};
+			{				
 				readbuf.memory = (char*)opts.body;
 				readbuf.size = opts.body_size;
 				curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
@@ -109,6 +115,7 @@ namespace net {
 				curl_easy_setopt(curl, CURLOPT_READDATA, &readbuf);
 				curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, readbuf.size);
 				curl_easy_setopt(curl, CURLOPT_POST, 1L);
+
 			}
 
 			if (opts.follow_redirects)
@@ -125,7 +132,7 @@ namespace net {
 			auto err = curl_easy_perform(curl);
 			if (err)
 			{
-				throw stdext::exception("Exception in Curl: {0}", errstr);
+				throw stdext::exception("Exception in Curl: {0}\n", errstr);
 			}
 			ResultType res = deserialize(chunk.memory, chunk.size);
 			free(chunk.memory);
