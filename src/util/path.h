@@ -73,6 +73,7 @@ namespace path
 	//
 	CRAFT_UTIL_EXPORTED void ensure_directory(std::string const& path);
 	CRAFT_UTIL_EXPORTED void make_directory(std::string const& path);
+	CRAFT_UTIL_EXPORTED void remove_directory(std::string const& path);
 	// Checks if a path exists (uses FS).
 	//
 	// Only checks for *exactly* the path requested, e.g. checks for either a dir or a file.
@@ -90,6 +91,24 @@ namespace path
 	//
 	// Lists addition extensions to the given path. Call file first.
 	CRAFT_UTIL_EXPORTED std::vector<std::string> list_extensions(std::string const& path);
+
+
+	// Get the fully qualified path to the current executable
+	CRAFT_UTIL_EXPORTED std::string executable_path();
+	
+	// Get the path to the user's homefolder (%HOMEPATH% windows, `~` POSIX)
+	CRAFT_UTIL_EXPORTED std::string home_path();
+
+	// Get the path to system temporary directory
+	CRAFT_UTIL_EXPORTED std::string system_temp_path();
+	// Get the path to the user temporary directory 
+	CRAFT_UTIL_EXPORTED std::string user_temp_path();
+
+	// Get the path to system data directory
+	CRAFT_UTIL_EXPORTED std::string system_data_path();
+	// Get the path to the user temporary directory 
+	CRAFT_UTIL_EXPORTED std::string user_data_path();
+
 
 	// Watches a directory and it's subdirectories for changes.
 	// Calls check to signal the signals.

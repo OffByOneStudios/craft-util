@@ -35,6 +35,7 @@ include(${CRAFT_CMAKE_DIR}/MakeVSDocs.cmake)
 
 # Use This Preprocess Def to Control exports
 add_definitions(-D${CRAFT_TRIPLE_CROSS})
+add_definitions(-DCRAFT_TRIPLE_CROSS="${CRAFT_TRIPLE_CROSS}")
 
 # Dependent Projects
 

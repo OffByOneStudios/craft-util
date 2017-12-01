@@ -1,3 +1,3 @@
 target_link_libraries(
-  CraftEngineDepsUtil "-framework Security"
+  CraftEngineDepsUtil -framework Security
   )

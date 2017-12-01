@@ -20,6 +20,8 @@ platform-dependencies:
     - Ws2_32.lib 
     - pathcch.lib 
     - shlwapi.lib
+    - Shell32.lib
+
   osx_x64_clang:
     - "-framework Security"
   debian_x64_gcc: []

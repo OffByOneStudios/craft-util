@@ -36,8 +36,9 @@ namespace net {
 
 		inline size_t curl_write(void *contents, size_t size, size_t nmemb, void *userp)
 		{
-			size_t realsize = size * nmemb;
+			
 			_impl::CurlBuffer *mem = (_impl::CurlBuffer *)userp;
+			size_t realsize = size * nmemb;
 
 			mem->memory = (char*)realloc(mem->memory, mem->size + realsize + 1);
 			if (mem->memory == NULL) {
@@ -45,10 +46,9 @@ namespace net {
 				return size_t(0);
 			}
 
-			memcpy(&(mem->memory[mem->size]), contents, realsize);
+			memcpy(mem->memory + mem->offset, contents, realsize);
 			mem->size += realsize;
-			mem->memory[mem->size] = 0;
-
+			mem->offset += realsize;
 			return realsize;
 		}
 
@@ -110,6 +110,12 @@ namespace net {
 				curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, readbuf.size);
 				curl_easy_setopt(curl, CURLOPT_POST, 1L);
 			}
+
+			if (opts.follow_redirects)
+			{
+				curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+			}
+
 			curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, _impl::http_type(opts.type).c_str());
 			curl_easy_setopt(curl, CURLOPT_USERAGENT, ((opts.user_agent.size()) ? opts.user_agent.c_str() : "libcurl-agent/1.0"));
 			curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);

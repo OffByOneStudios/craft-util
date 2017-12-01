@@ -213,6 +213,27 @@ void path::ensure_directory(std::string const& path)
 	}
 }
 
+//TODO(clark) Moves these away
+#include <stdio.h>
+#include <ftw.h>
+#include <unistd.h>
+void path::remove_directory(std::string const& path)
+{
+	https://stackoverflow.com/a/5467788
+	auto d = path::dir(path::normalize(path));
+	if (!path::exists(d)) return;
+	
+	nftw(d.c_str(), [](const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf)[] {
+		int rv = remove(fpath);
+
+		if (rv)
+			perror(fpath);
+
+		return rv;
+	}, 64, FTW_DEPTH | FTW_PHYS);
+}
+
+
 std::string path::extname(std::string const& path)
 {
     std::string i_path = path::normalize(path);
@@ -370,6 +391,24 @@ std::vector<std::string> path::list_extensions(std::string const& path)
 
   	return ret;
 }
+
+#include <sys/stat.h>
+std::string path::executable_path()
+{
+	https://stackoverflow.com/a/4025415
+	char path[PATH_MAX];
+	char dest[PATH_MAX];
+	memset(dest, 0, sizeof(dest)); // readlink does not null terminate!
+	struct stat info;
+	pid_t pid = getpid();
+	sprintf(path, "/proc/%d/exe", pid);
+	if (readlink(path, dest, PATH_MAX) == -1)
+		throw stdext::exception("Error Derefing symlink");
+	else {
+		return std::string(dest);
+	}
+}
+
 
 path::watch::watch(std::string const& path)
 {

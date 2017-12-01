@@ -22,6 +22,7 @@ namespace net {
 	HTTPMethod type;
     void* body;
     size_t body_size;
+	bool follow_redirects;
   };
   
 

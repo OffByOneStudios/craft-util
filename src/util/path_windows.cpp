@@ -16,6 +16,7 @@ purpose using the std::wstring
 
 #include <windows.h>
 #include <Shlwapi.h> // does not syupport long paths, for PathIsRelative and relative paths ONLY
+#include "Shlobj.h"
 #include <Pathcch.h>
 
 #include <atomic>
@@ -547,6 +548,82 @@ void path::ensure_directory(std::string const& path)
 			path::make_directory(p);
 		}
 	}
+}
+
+void path::remove_directory(std::string const& path)
+{
+	auto d = path::normalize(path);
+	if (!path::exists(d)) return;
+	for (auto f : path::list_files(d))
+	{
+		impl::string i_f = impl::to(path::join(d,f));
+		DeleteFileW(i_f.c_str());
+	}
+	for (auto dr : path::list_dirs(d))
+	{
+		remove_directory(path::join(d, dr));
+		impl::string i_d = impl::to(path::join(d,dr));
+	}
+
+	impl::string i_d = impl::to(d);
+	RemoveDirectoryW(i_d.c_str());
+}
+
+
+std::string path::executable_path()
+{
+	//https://stackoverflow.com/a/2647446
+	HMODULE hModule = GetModuleHandleW(NULL);
+	WCHAR path[MAX_PATH];
+	GetModuleFileNameW(hModule, path, MAX_PATH);
+	impl::string i_res(path);
+	return impl::from(i_res);
+}
+
+
+
+std::string path::system_temp_path()
+{
+	wchar_t temppath[_MAX_PATH];      // absolute path of temporary .bat file
+	GetTempPathW(_MAX_PATH, temppath);
+
+	impl::string i_res(temppath);
+	return impl::from(i_res);
+}
+
+// Get the path to the user temporary directory 
+std::string path::user_temp_path()
+{
+	wchar_t temppath[_MAX_PATH];
+	SHGetFolderPathW(NULL,
+		CSIDL_LOCAL_APPDATA | CSIDL_FLAG_CREATE,
+		NULL,
+		0,
+		temppath);
+
+	impl::string i_res(temppath);
+	return path::join(impl::from(i_res), "Temp");
+}
+
+// Get the path to system data directory
+std::string path::system_data_path()
+{
+	//TODO Find the CISDL code for this
+	return "C:\\ProgramData";
+}
+
+// Get the path to the user temporary directory 
+std::string path::user_data_path()
+{
+	wchar_t temppath[_MAX_PATH];
+	SHGetFolderPathW(NULL,
+		CSIDL_APPDATA | CSIDL_FLAG_CREATE,
+		NULL,
+		0,
+		temppath);
+
+	impl::string i_res(temppath);
+	return impl::from(i_res);
 }
 
 /******************************************************************************
