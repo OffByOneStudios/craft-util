@@ -219,11 +219,12 @@ void path::ensure_directory(std::string const& path)
 #include <unistd.h>
 void path::remove_directory(std::string const& path)
 {
-	https://stackoverflow.com/a/5467788
+	//https://stackoverflow.com/a/5467788
 	auto d = path::dir(path::normalize(path));
 	if (!path::exists(d)) return;
 	
-	nftw(d.c_str(), [](const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf)[] {
+	nftw(d.c_str(), [](const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf)
+	{
 		int rv = remove(fpath);
 
 		if (rv)
