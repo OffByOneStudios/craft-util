@@ -273,8 +273,8 @@ bool path::is_relative(std::string const& path)
 
 bool path::is_root(std::string const& path)
 {
-  std::regex e ("R[A-Za-z]:\\");
-  return regex::match(path, e);
+  std::regex e (R"re([A-Za-z]:\\)re");
+  return std::regex_match(path, e);
 }
 
 std::string path::absolute(std::string const& path)
