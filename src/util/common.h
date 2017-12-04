@@ -22,6 +22,7 @@
 #include <type_traits>
 #include <algorithm>
 #include <functional>
+#include <regex>
 #include <vector>
 #include <queue>
 #include <stack>

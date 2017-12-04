@@ -22,6 +22,8 @@ namespace path
 	// Checks to see if the path describes an absolute location (rather than absolute)
 	CRAFT_UTIL_EXPORTED bool is_absolute(std::string const& path);
 
+  // Check to see if path is equal to the filesystem root
+  CRAFT_UTIL_EXPORTED bool is_root(std::string const& path);
 	// Checks to see if the path describes a relative location (rather than relative)
 	CRAFT_UTIL_EXPORTED bool is_relative(std::string const& path);
 

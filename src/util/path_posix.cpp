@@ -89,6 +89,12 @@ bool path::is_relative(std::string const& path)
 {
     return path::normalize(path)[0] != '/';
 }
+
+bool path::is_root(const std::string &path)
+{
+  return path == "/";
+}
+
 std::string path::absolute(std::string const& path)
 {
     char* f = getwd(NULL);
@@ -396,7 +402,7 @@ std::vector<std::string> path::list_extensions(std::string const& path)
 #include <sys/stat.h>
 std::string path::executable_path()
 {
-	https://stackoverflow.com/a/4025415
+	//https://stackoverflow.com/a/4025415
 	char path[PATH_MAX];
 	char dest[PATH_MAX];
 	memset(dest, 0, sizeof(dest)); // readlink does not null terminate!
