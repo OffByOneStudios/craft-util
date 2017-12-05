@@ -187,7 +187,8 @@ void path::make_directory(std::string const&path)
 	}
 
 	auto res = mkdir(path.c_str(), 0664);
-	if (!res)
+  chmod(path.c_str(), 0755);
+	if (res)
 	{
 		if (ENOENT == res)
 		{
@@ -226,9 +227,9 @@ void path::ensure_directory(std::string const& path)
 void path::remove_directory(std::string const& path)
 {
 	//https://stackoverflow.com/a/5467788
-	auto d = path::dir(path::normalize(path));
+	auto d = path::normalize(path);
 	if (!path::exists(d)) return;
-	
+
 	nftw(d.c_str(), [](const char *fpath, const struct stat *sb, int typeflag, struct FTW *ftwbuf)
 	{
 		int rv = remove(fpath);
