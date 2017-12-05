@@ -1,4 +1,6 @@
 # Build stuff
+cmake/*
+CMakeLists.txt
 build
 dist
 .DS_Store
