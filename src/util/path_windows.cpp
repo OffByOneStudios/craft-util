@@ -334,6 +334,8 @@ std::string path::file(std::string const& path, std::string const& ext)
 	return path + "." + ext;
 }
 
+
+
 std::string path::dir(std::string const& path)
 {
 	impl::string i_path = impl::to(path);
@@ -446,6 +448,22 @@ std::string path::dirname(std::string const& path)
 		{
 			return impl::from(i_path.substr(sindex + 1) + impl::to("\\"));
 		}
+	}
+}
+
+std::string path::filebase(std::string const& path)
+{
+	auto fname = path::filename(path);
+	auto ext = path::extname(path);
+
+	auto index = fname.find(ext);
+	if (index == fname.npos)
+	{
+		return fname;
+	}
+	else
+	{
+		return fname.substr(0, index - 1);
 	}
 }
 

@@ -241,6 +241,22 @@ void path::remove_directory(std::string const& path)
 }
 
 
+std::string path::filebase(std::string const& path)
+{
+	auto fname = path::filename(path);
+	auto ext = path::extname(path);
+
+	auto index = fname.find(ext);
+	if (index == fname.npos)
+	{
+		return fname;
+	}
+	else
+	{
+		return fname.substr(0, index);
+	}
+}
+
 std::string path::extname(std::string const& path)
 {
     std::string i_path = path::normalize(path);

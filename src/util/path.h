@@ -4,9 +4,9 @@
 namespace path
 {
 
-/******************************************************************************
-** Platform Path Implementations
-******************************************************************************/
+	/******************************************************************************
+	** Platform Path Implementations
+	******************************************************************************/
 
 	// Joins two path strings togeather, embeds relative imports into the string.
 	//
@@ -22,8 +22,8 @@ namespace path
 	// Checks to see if the path describes an absolute location (rather than absolute)
 	CRAFT_UTIL_EXPORTED bool is_absolute(std::string const& path);
 
-  // Check to see if path is equal to the filesystem root
-  CRAFT_UTIL_EXPORTED bool is_root(std::string const& path);
+	// Check to see if path is equal to the filesystem root
+	CRAFT_UTIL_EXPORTED bool is_root(std::string const& path);
 	// Checks to see if the path describes a relative location (rather than relative)
 	CRAFT_UTIL_EXPORTED bool is_relative(std::string const& path);
 
@@ -45,6 +45,9 @@ namespace path
 
 	// Checks to see if the path describes a file (rather than a directory)
 	CRAFT_UTIL_EXPORTED bool is_file(std::string const& path);
+
+	// Extracts the filename, without an extension
+	CRAFT_UTIL_EXPORTED std::string filebase(std::string const& path);
 
 	// Extracts the filename, including the extenion, of the path, if the path is not a file then
 	// returns "".
@@ -97,7 +100,7 @@ namespace path
 
 	// Get the fully qualified path to the current executable
 	CRAFT_UTIL_EXPORTED std::string executable_path();
-	
+
 	// Get the path to the user's homefolder (%HOMEPATH% windows, `~` POSIX)
 	CRAFT_UTIL_EXPORTED std::string home_path();
 
@@ -131,9 +134,9 @@ namespace path
 		Signal< void(std::string const& delFilename) > onRemFile;
 	};
 
-/******************************************************************************
-** Shared Path Utilities
-******************************************************************************/
+	/******************************************************************************
+	** Shared Path Utilities
+	******************************************************************************/
 
 	// Walks a tree of files from the given root directory (uses FS).
 	class walk
@@ -186,9 +189,9 @@ namespace path
 		inline const_iterator end() const { return cend(); }
 	};
 
-/******************************************************************************
-** Inline Helpers
-******************************************************************************/
+	/******************************************************************************
+	** Inline Helpers
+	******************************************************************************/
 
 	inline std::string join(std::string a0, std::string a1, std::string last)
 	{
