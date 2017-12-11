@@ -1,4 +1,5 @@
-id: CraftEngine.Deps.Util
+id: Util
+namespace: OffByOneStudios
 name: Craft Util
 version: "1.0.0"
 repo: http://github.com/OffByOneStudios/craft-util

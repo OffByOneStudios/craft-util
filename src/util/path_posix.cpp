@@ -4,22 +4,29 @@
 
 #include "algorithms.hpp"
 #include "exception.h"
-
+#include <pwd.h>
 using namespace path;
 
 std::string path::join(std::string const& first, std::string const& second)
 {
+    if(second == "") return first;
+    if(first == "") return second;
+  
     std::string nfirst = first;
     if(nfirst != ".")
     {
         nfirst = path::normalize(first);
     }
-    return fmt::format("{0}/{1}", nfirst, path::normalize(second));
+    return fmt::format("{0}/{1}", (nfirst != "/") ? nfirst : "", path::normalize(second));
 }
 
 std::string path::normalize(std::string const& path)
 {
     // https://hg.python.org/cpython/file/v2.7.3/Lib/posixpath.py#l312
+    if (path == "/")
+    {
+        return "/";
+    }
     if (path == "")
     {
         return ".";
@@ -97,6 +104,8 @@ bool path::is_root(const std::string &path)
 
 std::string path::absolute(std::string const& path)
 {
+    if(path[0] == '/') return path;
+    
     char* f = getwd(NULL);
     std::string cwd(f);
     free(f);
@@ -164,12 +173,7 @@ std::string path::filename(std::string const& path)
 {
   std::string i_path = path::normalize(path);
   size_t sindex = i_path.find_last_of("/");
-  size_t dindex = i_path.find_last_of(".");
-  if (dindex == std::string::npos)
-  {
-    return std::string("");
-  }
-  else if(sindex == std::string::npos)
+  if(sindex == std::string::npos)
   {
     return i_path;
   }
@@ -186,14 +190,18 @@ void path::make_directory(std::string const&path)
 		throw stdext::exception("Path Exists");
 	}
 
-	auto res = mkdir(path.c_str(), 0664);
-  chmod(path.c_str(), 0755);
+	auto res = mkdir(path.c_str(), 0764);
+  chmod(path.c_str(), 0764);
 	if (res)
 	{
 		if (ENOENT == res)
 		{
 			throw stdext::exception("One or more intermediate directories do not exist. call path::ensure_directory instead");
 		}
+    else if(EACCES == res)
+    {
+      throw stdext::exception("Permission Denied");
+    }
     else
     {
       throw stdext::exception("Unimplemented mkdir Error");
@@ -204,12 +212,12 @@ void path::make_directory(std::string const&path)
 
 void path::ensure_directory(std::string const& path)
 {
-	auto d = path::dir(path::normalize(path));
+	auto d = (is_file(path)) ? path::dir(path::normalize(path)): path;
 	if (path::exists(d)) return;
 
 	std::vector<std::string> parts;
-	stdext::split(d, "/", std::back_inserter(parts));
-	std::string p = path::absolute("./");
+	stdext::split(path::absolute(d), "/", std::back_inserter(parts));
+	std::string p = "/";
 	for (auto part : parts)
 	{
 		p = path::join(p, part);
@@ -248,13 +256,13 @@ std::string path::filebase(std::string const& path)
 	auto ext = path::extname(path);
 
 	auto index = fname.find(ext);
-	if (index == fname.npos)
+	if (index == fname.npos || ext == "")
 	{
 		return fname;
 	}
 	else
 	{
-		return fname.substr(0, index);
+		return fname.substr(0, index - 1);
 	}
 }
 
@@ -423,7 +431,7 @@ std::string path::executable_path()
 	char path[PATH_MAX];
 	char dest[PATH_MAX];
 	memset(dest, 0, sizeof(dest)); // readlink does not null terminate!
-	struct stat info;
+	
 	pid_t pid = getpid();
 	sprintf(path, "/proc/%d/exe", pid);
 	if (readlink(path, dest, PATH_MAX) == -1)
@@ -431,6 +439,44 @@ std::string path::executable_path()
 	else {
 		return std::string(dest);
 	}
+}
+
+std::string path::home_path()
+{
+  if(getenv("HOME"))
+  {
+    return std::string(getenv("HOME"));
+  }
+  else
+  {
+    auto id = getuid();
+    return std::string(getpwuid(id)->pw_dir);
+  }
+}
+
+std::string path::system_temp_path()
+{
+  return std::string("/tmp");
+}
+
+std::string path::user_temp_path()
+{
+  return fmt::format("/tmp/{0}", getpwuid(getuid())->pw_name);
+}
+
+std::string path::system_data_path()
+{
+  return std::string("/opt");
+}
+
+std::string path::user_data_path()
+{
+#ifdef osx_x64_clang
+  return path::join(home_path(), "Library");
+#else
+  return path::join(home_path(), ".appdata");
+#endif
+  
 }
 
 

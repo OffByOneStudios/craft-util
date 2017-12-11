@@ -218,6 +218,9 @@ namespace impl
 
 std::string path::join(std::string const& first, std::string const& second)
 {
+  if(second == "") return first;
+  if(first == "") return second;
+  
 	impl::string i_first = impl::to(first);
 	impl::string i_second = impl::to(second);
 
@@ -557,12 +560,12 @@ void path::make_directory(std::string const&path)
 
 void path::ensure_directory(std::string const& path)
 {
-	auto d = path::dir(path::normalize(path));
+	auto d = (is_file(path)) ? path::dir(path::normalize(path)): path;
 	if (path::exists(d)) return;
 
 	std::vector<std::string> parts;
 	stdext::split(d, "\\", std::back_inserter(parts));
-	std::string p = path::absolute(".\\");
+	std::string p = path::absolute("");
 	for (auto part : parts)
 	{
 		p = path::join(p, part);
