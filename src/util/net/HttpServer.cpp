@@ -48,24 +48,27 @@ void HttpServer::init()
 			_logger->error("Unexpected Client Disconnect");
 			return;
 		}
-		std::string resp;
+		craft::net::HttpResponse resp;
+		craft::net::HTTPRequest req;
 		try
 		{
-			craft::net::HTTPRequest req = craft::net::parse_request(buf.data(), _read);
-			resp = fmt::format("{0}\r\n{1}\r\n\r\n{2}",
-				"HTTP / 1.0 200 OK",
-				"Content-Type: text/plain",
-				"OK!");
+			req = craft::net::parse_request(buf.data(), _read);
+			resp.code = 404;
+			resp.content_type = "text/plain";
+			for(auto hand : handlers)
+			{
+				if(hand->handle(req, resp)) break;
+			}
 		}
 		catch (stdext::exception e)
 		{
-			resp = fmt::format("{0}\r\n{1}\r\n\r\n{2}",
-				"HTTP / 1.0 400 Bad Request",
-				"Content-Type: text/plain",
-				"Ya Goofed!");
+			resp.code = 404;
+			resp.content_type = "text/plain";
+			resp.data << ":(";
 		}
 
-		auto sres = send(socket, resp.data(), resp.size(), 0);
+		std::string res = resp.format();
+		auto sres = send(socket, res.data(), res.size(), 0);
 		if (sres == SEND_ERROR)
 		{
 			//auto err = WSAGetLastError();

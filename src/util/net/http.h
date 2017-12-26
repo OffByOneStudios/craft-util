@@ -18,8 +18,8 @@ namespace net {
   {
     std::map<std::string, std::string> headers;
     std::string user_agent;
-	std::string path;
-	HTTPMethod type;
+    std::string path;
+    HTTPMethod type;
     void* body;
     size_t body_size;
 	bool follow_redirects;
@@ -34,7 +34,16 @@ namespace net {
 		body_size = 0;
 		follow_redirects = false;
 	}
-  };
+};
+
+struct HttpResponse
+{
+  uint16_t code;
+  std::string content_type;
+  std::stringstream data;
+
+  CRAFT_UTIL_EXPORTED std::string format();
+};
   
 
   CRAFT_UTIL_EXPORTED HTTPRequest parse_request(const char* data, size_t length);

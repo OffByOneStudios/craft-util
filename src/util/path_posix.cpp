@@ -9,15 +9,21 @@ using namespace path;
 
 std::string path::join(std::string const& first, std::string const& second)
 {
-    if(second == "") return first;
-    if(first == "") return second;
-  
-    std::string nfirst = first;
-    if(nfirst != ".")
+    auto sep = "/";
+    auto path = first;
+    if(second[0] == '/')
     {
-        nfirst = path::normalize(first);
+        path = second;
     }
-    return fmt::format("{0}/{1}", (nfirst != "/") ? nfirst : "", path::normalize(second));
+    else if (path == "" || path[path.size() - 1] == '/')
+    {
+        path = path + second;
+    }
+    else
+    {
+        path = path + "/" + second;
+    }
+    return path;
 }
 
 std::string path::normalize(std::string const& path)
@@ -161,7 +167,14 @@ std::string path::common(std::string const& first, std::string const& second)
 
 bool path::is_dir(std::string const& path)
 {
-    return path::filename(path) == std::string("");
+    DIR* directory = opendir(path.c_str());
+
+    if(directory != NULL)
+    {
+     closedir(directory);
+     return true;
+    }
+    return false;
 }
 
 bool path::is_file(std::string const& path)
@@ -171,15 +184,15 @@ bool path::is_file(std::string const& path)
 
 std::string path::filename(std::string const& path)
 {
-  std::string i_path = path::normalize(path);
-  size_t sindex = i_path.find_last_of("/");
+  size_t sindex = path.find_last_of("/");
   if(sindex == std::string::npos)
   {
-    return i_path;
+    return path;
   }
   else
   {
-    return i_path.substr(sindex + 1);
+    auto res = path.substr(sindex + 1);
+    return res;
   }
 }
 

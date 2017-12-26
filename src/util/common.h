@@ -28,6 +28,7 @@
 #include <stack>
 #include <future>
 #include <map>
+#include <sstream>
 
 // INTERNAL
 #include "util/signal.hpp"
