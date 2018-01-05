@@ -100,6 +100,8 @@ namespace path
 
 	// Get the fully qualified path to the current executable
 	CRAFT_UTIL_EXPORTED std::string executable_path();
+	
+	CRAFT_UTIL_EXPORTED void set_cwd(std::string const& path);
 
 	// Get the path to the user's homefolder (%HOMEPATH% windows, `~` POSIX)
 	CRAFT_UTIL_EXPORTED std::string home_path();

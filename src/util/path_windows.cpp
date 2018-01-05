@@ -606,6 +606,20 @@ std::string path::executable_path()
 	return impl::from(i_res);
 }
 
+void path::set_cwd(std::string const& path)
+{
+	impl::string i_path;
+	if (!path::is_dir(path))
+	{
+		i_path = impl::to(path::dir(path));
+	}
+	else
+	{
+		i_path = impl::to(path);
+	}
+
+	SetCurrentDirectoryW(i_path.c_str());
+}
 
 
 std::string path::system_temp_path()

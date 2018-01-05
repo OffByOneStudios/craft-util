@@ -1,4 +1,5 @@
 # Build stuff
+common.cpp
 .vscode
 cmake/*
 CMakeLists.txt

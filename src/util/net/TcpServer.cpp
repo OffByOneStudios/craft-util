@@ -3,7 +3,7 @@
 #include "TcpServer.h"
 #include "util/exception.h"
 
-#ifdef win_x64_vc140
+#ifdef _WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #else
@@ -12,7 +12,8 @@
 #include <netdb.h>
 #endif
 
-#ifdef win_x64_vc140
+#ifdef _WIN32
+
 #define STAHP_CLIENT SD_BOTH
 #define SOCKET_FAIL INVALID_SOCKET
 #define ACCEPT_FAIL INVALID_SOCKET
@@ -34,7 +35,7 @@
 using namespace craft;
 using namespace craft::net;
 
-#ifdef win_x64_vc140
+#ifdef _WIN32
 std::string GetLastErrorStdStr(DWORD error)
 {
 	if (error)
@@ -61,7 +62,7 @@ std::string GetLastErrorStdStr(DWORD error)
 	}
 	return std::string();
 }
-#endif // win_x64_vc140
+#endif // x86_64-pc-windows-msvccoff
 
 TcpServer::~TcpServer()
 {
@@ -78,7 +79,7 @@ TcpServer::TcpServer(std::string node, int service, int maxconn, std::function<v
 
 void TcpServer::start()
 {
-	#ifdef win_x64_vc140
+#ifdef _WIN32
 	std::call_once(wsapi, []() {
     WSADATA wsaData;
     auto iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -141,7 +142,7 @@ void TcpServer::start()
       auto client = accept(listenfd, &clientaddr, &addrlen);
 			if (client == ACCEPT_FAIL)
 			{
-				#ifdef win_x64_vc140
+		#ifdef _WIN32
         auto s = GetLastErrorStdStr(WSAGetLastError());
         #else
         auto s = strerror(errno);

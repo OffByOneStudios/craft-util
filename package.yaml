@@ -1,12 +1,12 @@
 id: Util
 namespace: OffByOneStudios
-name: Craft Util
+shortname: Craft Util
 version: "1.0.0"
 repo: http://github.com/OffByOneStudios/craft-util
 dependencies: []
 
 vendor-dependencies:
-  win_x64_vc140:
+  x86_64-pc-windows-msvccoff:
     - libcurl
     - picohttpparser
   osx_x64_clang:
@@ -17,7 +17,7 @@ vendor-dependencies:
     - picohttpparser
 
 platform-dependencies:
-  win_x64_vc140:
+  x86_64-pc-windows-msvccoff:
     - Ws2_32.lib
     - pathcch.lib
     - shlwapi.lib
@@ -28,7 +28,7 @@ platform-dependencies:
   debian_x64_gcc: []
 
 platform-flags:
-  win_x64_vc140: []
+  x86_64-pc-windows-msvccoff: []
   osx_x64_clang:
     - "-std=c++1z"
     - "-stdlib=libc++"

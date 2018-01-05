@@ -3,7 +3,14 @@
 
 #include "util/defines.h"
 
-#ifdef win_x64_vc140
+constexpr int PLATFORM_CHECK(char const* lhs, char const* rhs)
+{
+	return (('\0' == lhs[0]) && ('\0' == rhs[0])) ? 0
+		: (lhs[0] != rhs[0]) ? (lhs[0] - rhs[0])
+		: PLATFORM_CHECK(lhs + 1, rhs + 1);
+}
+
+#ifdef WIN32
 // Fix terrible windows header
 #define NOMINMAX
 // Windows include

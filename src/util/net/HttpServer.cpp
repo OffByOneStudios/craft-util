@@ -7,7 +7,7 @@
 using namespace craft;
 using namespace craft::net;
 
-#ifdef win_x64_vc140
+#ifdef _WIN32
 #define STAHP_CLIENT SD_BOTH
 #define SOCKET_FAIL INVALID_SOCKET
 #define ACCEPT_FAIL INVALID_SOCKET

@@ -454,6 +454,11 @@ std::string path::executable_path()
 	}
 }
 
+void path::set_cwd(std::string const& path)
+{
+	chdir(path::dir(p).c_str());
+}
+
 std::string path::home_path()
 {
   if(getenv("HOME"))

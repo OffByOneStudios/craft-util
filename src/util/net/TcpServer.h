@@ -6,7 +6,7 @@ namespace net {
 	class TcpServer
 	{
 		// Platform Specific
-#ifdef win_x64_vc140
+#ifdef WIN32
 		std::once_flag wsapi;
 #endif
 		std::thread _worker;
