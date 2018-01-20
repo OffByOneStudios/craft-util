@@ -140,6 +140,11 @@ namespace concurrency
 			return _write - _trailingRead;
 		}
 
+		inline uint64_t capacity() const
+		{
+			return _bufferSize;
+		}
+
 		// TODO: Implement helpers for various full buffer stratigies:
 		// * Shift Blocking Readers By 1
 		// * Reset all Blocking Readers (returning a list of them)
