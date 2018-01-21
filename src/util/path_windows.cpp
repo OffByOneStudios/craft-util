@@ -472,34 +472,30 @@ std::string path::filebase(std::string const& path)
 
 std::string path::filename(std::string const& path)
 {
-	impl::string i_path = impl::to(path);
-	size_t sindex = i_path.find_last_of(impl::to("\\"));
-	size_t dindex = i_path.find_last_of(impl::to("."));
-	if (dindex == impl::string::npos)
+	size_t sindex = path.find_last_of("\\");
+	
+	if (sindex == impl::string::npos)
 	{
-		return std::string("");
-	}
-	else if(sindex == impl::string::npos)
-	{
-		return impl::from(i_path);
+		return path;
 	}
 	else
 	{
-		return impl::from(i_path.substr(sindex + 1));
+		return path.substr(sindex + 1);
 	}
 }
 
-CRAFT_UTIL_EXPORTED std::string path::extname(std::string const & path)
+std::string path::extname(std::string const & path)
 {
-	impl::string i_path = impl::to(path);
-	size_t dindex = i_path.find_last_of(impl::to("."));
-	if (dindex == impl::string::npos)
+	size_t sindex = path.find_last_of("\\");
+	size_t dindex = path.find_last_of(".");
+
+	if (dindex == impl::string::npos || dindex < sindex)
 	{
 		return std::string("");
 	}
 	else
 	{
-		return impl::from(i_path.substr(dindex + 1));
+		return path.substr(dindex + 1);
 	}
 }
 
@@ -608,14 +604,16 @@ std::string path::executable_path()
 
 void path::set_cwd(std::string const& path)
 {
+	auto abs_path = path::absolute(path);
+
 	impl::string i_path;
-	if (!path::is_dir(path))
+	if (!path::is_dir(abs_path))
 	{
-		i_path = impl::to(path::dir(path));
+		i_path = impl::to(path::dir(abs_path));
 	}
 	else
 	{
-		i_path = impl::to(path);
+		i_path = impl::to(abs_path);
 	}
 
 	SetCurrentDirectoryW(i_path.c_str());
