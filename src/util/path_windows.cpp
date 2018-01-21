@@ -350,8 +350,12 @@ std::string path::dir(std::string const& path)
 		assert(false && "PathCchRemoveFileSpec failed."); // TODO exceptions
 	}
 
-	i_path.push_back('\\');
-	return impl::from(i_path);
+	auto ret = impl::from(i_path);
+
+	if (ret.empty())
+		return ".";
+
+	return ret + "\\";
 }
 
 bool path::exists(std::string const& path)
