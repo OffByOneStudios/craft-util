@@ -151,7 +151,7 @@ namespace util {
 		
 		private:
 			nstate_array<radix>& m_na;
-			unsigned m_indexIntoBuffer;
+			size_t m_indexIntoBuffer;
 			unsigned m_digit;
 			reference(nstate_array<radix> &na, size_t indexIntoBuffer, unsigned digit) :
 				m_na (na),
@@ -181,14 +181,14 @@ namespace util {
 		reference operator[](size_t pos) {
 			assert(pos < m_max); // STL will only check bounds on integer boundaries
         	size_t indexIntoBuffer = pos / NstatesInPackedType();
-        	unsigned digit = pos % NstatesInPackedType();
+        	auto digit = unsigned(pos % NstatesInPackedType());
 			return reference (*this, indexIntoBuffer, digit);
 		}
 
 		Nstate<radix> operator[](size_t pos) const {
 			assert(pos < m_max); // STL will only check bounds on integer boundaries.
 			size_t indexIntoBuffer = pos / NstatesInPackedType();
-			unsigned digit = pos % NstatesInPackedType();
+			auto digit = unsigned(pos % NstatesInPackedType());
 			return GetDigitInPackedValue(m_buffer[indexIntoBuffer], digit);
 		}
 	
@@ -198,13 +198,13 @@ namespace util {
 			size_t newBufferSize = max / NstatesInPackedType() +
 				(max % NstatesInPackedType() == 0 ? 0 : 1);
 
-			unsigned oldMaxDigitNeeded = m_max % NstatesInPackedType();
+			auto oldMaxDigitNeeded = unsigned(m_max % NstatesInPackedType());
 			if ((oldMaxDigitNeeded == 0) && (m_max > 0))
-				oldMaxDigitNeeded = NstatesInPackedType();
+				oldMaxDigitNeeded = unsigned(NstatesInPackedType());
 
-			unsigned newMaxDigitNeeded = max % NstatesInPackedType();
+			auto newMaxDigitNeeded = unsigned(max % NstatesInPackedType());
 			if ((newMaxDigitNeeded == 0) && (max > 0))
-				newMaxDigitNeeded = NstatesInPackedType();
+				newMaxDigitNeeded = unsigned(NstatesInPackedType());
 			
 			m_buffer.resize(newBufferSize, 0 /* fill value */);
 			m_max = max;
@@ -215,7 +215,7 @@ namespace util {
 				// nstates we are fitting in the lastmost packed value, we must set
 				// the trailing unused nstates to zero if we are using fewer nstates
 				// than we were before
-				for (int eraseDigit = newMaxDigitNeeded; eraseDigit < oldMaxDigitNeeded; eraseDigit++) {
+				for (auto eraseDigit = newMaxDigitNeeded; eraseDigit < oldMaxDigitNeeded; eraseDigit++) {
 					m_buffer[newBufferSize - 1] =
 						SetDigitInPackedValue(m_buffer[newBufferSize - 1], eraseDigit, 0); 
 				}
@@ -225,7 +225,7 @@ namespace util {
 				// If the number of tristates we are using isn't an even multiple of the 
 				// # of states that fit in a packed type, then shrinking will leave some 
 				// residual values we need to reset to zero in the last element of the vector.
-				for (int eraseDigit = newMaxDigitNeeded; eraseDigit < NstatesInPackedType(); eraseDigit++) {
+				for (auto eraseDigit = newMaxDigitNeeded; eraseDigit < NstatesInPackedType(); eraseDigit++) {
 					m_buffer[newBufferSize - 1] =
 						SetDigitInPackedValue(m_buffer[newBufferSize - 1], eraseDigit, 0);
 				}
