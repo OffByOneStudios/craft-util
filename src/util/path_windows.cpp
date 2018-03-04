@@ -611,16 +611,12 @@ void path::set_cwd(std::string const& path)
 	auto abs_path = path::absolute(path);
 
 	impl::string i_path;
-	if (!path::is_dir(abs_path))
+	i_path = impl::to(abs_path);
+	auto res = SetCurrentDirectoryW(i_path.c_str());
+	if (!res)
 	{
-		i_path = impl::to(path::dir(abs_path));
+		throw stdext::exception("Folder is not a directory");
 	}
-	else
-	{
-		i_path = impl::to(abs_path);
-	}
-
-	SetCurrentDirectoryW(i_path.c_str());
 }
 
 
