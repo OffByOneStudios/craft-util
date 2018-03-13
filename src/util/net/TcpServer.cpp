@@ -4,6 +4,10 @@
 #include "util/exception.h"
 
 #ifdef _WIN32
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #else

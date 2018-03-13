@@ -46,7 +46,7 @@ namespace impl
 		string ret;
 		ret.resize(size);
 
-		size_t wrote = (size_t)MultiByteToWideChar(CP_UTF8, 0,
+		/*size_t wrote = (size_t)*/MultiByteToWideChar(CP_UTF8, 0,
 			in.c_str(), len,
 			&ret[0], (int)ret.size());
 		return ret;
@@ -63,7 +63,7 @@ namespace impl
 		std::string ret;
 		ret.resize(size);
 
-		size_t wrote = (size_t)WideCharToMultiByte(CP_UTF8, 0,
+		/*size_t wrote = (size_t)*/WideCharToMultiByte(CP_UTF8, 0,
 			in.c_str(), len,
 			&ret[0], (int)ret.size(),
 			nullptr, nullptr);
@@ -706,7 +706,7 @@ struct _path_watch_implementation
 
 		t_state()
 			: originally_existed(false)
-			, was_created(false), was_destroyed(false), was_modified(false), was_renamed(false)
+			, was_created(false), was_modified(false), was_destroyed(false), was_renamed(false)
 		{
 		}
 	};

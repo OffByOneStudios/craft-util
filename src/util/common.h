@@ -41,8 +41,18 @@ constexpr int PLATFORM_CHECK(char const* lhs, char const* rhs)
 #include "util/signal.hpp"
 
 //Vendor
+
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wexpansion-to-defined"
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/fmt.h"
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
+
 #define CURL_STATICLIB
 #include "curl/curl.h"
 #include "h2o/picohttpparser.h"
