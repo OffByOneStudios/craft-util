@@ -44,7 +44,7 @@ constexpr int PLATFORM_CHECK(char const* lhs, char const* rhs)
 
 #ifdef __clang__
 #pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wexpansion-to-defined"
+//#pragma clang diagnostic ignored "-Wexpansion-to-defined"
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #endif
 #include "spdlog/spdlog.h"

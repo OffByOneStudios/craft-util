@@ -111,7 +111,7 @@ bool path::is_root(const std::string &path)
 std::string path::absolute(std::string const& path)
 {
     if(path[0] == '/') return path;
-    
+
     char* f = getwd(NULL);
     std::string cwd(f);
     free(f);
@@ -444,7 +444,7 @@ std::string path::executable_path()
 	char path[PATH_MAX];
 	char dest[PATH_MAX];
 	memset(dest, 0, sizeof(dest)); // readlink does not null terminate!
-	
+
 	pid_t pid = getpid();
 	sprintf(path, "/proc/%d/exe", pid);
 	if (readlink(path, dest, PATH_MAX) == -1)
@@ -489,12 +489,12 @@ std::string path::system_data_path()
 
 std::string path::user_data_path()
 {
-#ifdef osx_x64_clang
+#ifdef __APPLE__
   return path::join(home_path(), "Library");
 #else
   return path::join(home_path(), ".appdata");
 #endif
-  
+
 }
 
 
