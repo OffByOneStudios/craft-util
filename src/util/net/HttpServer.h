@@ -24,7 +24,17 @@ namespace net
 		TcpServer* _serve;
 		int _port;
 		std::shared_ptr<spdlog::logger> _logger;
+
+		
 	public:
+		inline virtual ~HttpServer()
+		{
+			for (HTTPRequestHandler* h : handlers)
+			{
+				delete h;
+			}
+		}
+
 		std::vector<HTTPRequestHandler*> handlers;
 
 		CRAFT_UTIL_EXPORTED HttpServer(std::shared_ptr<spdlog::logger> logger, int port);
