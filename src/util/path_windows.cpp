@@ -882,7 +882,7 @@ void _path_watch_implementation::_main(void)
 	_threadHandle = GetCurrentThread();
 	_running = true;
 
-	this->dir = CreateFile(
+	this->dir = CreateFileA(
 		_this->path.c_str(),
 		FILE_LIST_DIRECTORY,
 		FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
