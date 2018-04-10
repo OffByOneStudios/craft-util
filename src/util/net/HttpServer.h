@@ -16,6 +16,7 @@ namespace net
 			Return True to stop propagation
 		*/
 	public:
+		inline virtual ~HTTPRequestHandler() = default;
 		virtual bool handle(HTTPRequest& req, HttpResponse& rep) = 0;
 	};
 
