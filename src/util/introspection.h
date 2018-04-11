@@ -52,6 +52,28 @@ namespace stdext
 	struct is_specialization<Template<Args...>, Template> : std::true_type {};
 
 	//
+	// parameter packs
+	//
+
+	template <class T1, class ...T>
+	struct parampack_first
+	{
+		typedef T1 type;
+	};
+
+	template <class T1, class ...T>
+	struct parampack_last
+	{
+		typedef typename parampack_last<T...>::type type;
+	};
+
+	template <class T1>
+	struct parampack_last<T1>
+	{
+		typedef T1 type;
+	};
+
+	//
 	// iterators
 	//
 
