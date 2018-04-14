@@ -1,4 +1,4 @@
-#include "common.h"
+#include "util/common.h"
 #if defined(_WIN32)
 #include "path.h"
 
@@ -516,8 +516,8 @@ bool path::is_file(std::string const& path)
 
 std::string path::relative(std::string const& path_with_relative, std::string const& base_path)
 {
-	impl::string i_left = impl::to(path_with_relative);
-	impl::string i_right = impl::to(base_path);
+	impl::string i_left = impl::to(path::absolute(path_with_relative));
+	impl::string i_right = impl::to(path::absolute(base_path));
 
 	if (i_left.length() < i_right.length())
 		return "";
@@ -527,6 +527,7 @@ std::string path::relative(std::string const& path_with_relative, std::string co
 	{
 		counter++;
 	}
+
 	if (counter == 0)
 	{
 		return std::string("");
