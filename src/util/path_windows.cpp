@@ -516,8 +516,8 @@ bool path::is_file(std::string const& path)
 
 std::string path::relative(std::string const& path_with_relative, std::string const& base_path)
 {
-	impl::string i_left = impl::to(path::absolute(path_with_relative));
-	impl::string i_right = impl::to(path::absolute(base_path));
+	impl::string i_left = impl::to(path::normalize(path::absolute(path_with_relative)));
+	impl::string i_right = impl::to(path::normalize(path::absolute(base_path)));
 
 	if (i_left.length() < i_right.length())
 		return "";
