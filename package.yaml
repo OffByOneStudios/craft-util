@@ -38,11 +38,17 @@ platform-flags:
     - "-pthread"
     - "-fpermissive"
 
-
-files:
+artifacts:
   library:
-    - src/**/*.*
+    primary: yes
+    kind: dll
+    files:
+      - src/**/*.*
   test:
-    - test/**/*.*
+    kind: test
+    files:
+      - test/**/*.*
   entry:
-    - entry/**/*.*
+    kind: exe
+    files:
+      - entry/**/*.*
