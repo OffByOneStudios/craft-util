@@ -20,6 +20,6 @@ namespace stdext
 	};
 	
 	template<typename TSelf, typename TId>
-  inline std::ostream & operator<<(std::ostream & s, stdext::IdValue<TSelf, TId> const & v) { s << v.id; return s; }
+	inline std::ostream & operator<<(std::ostream & s, stdext::IdValue<TSelf, TId> const & v) { s << v.id; return s; }
 
 }
