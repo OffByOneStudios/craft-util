@@ -162,7 +162,7 @@ namespace stdext
 	{
 		auto v = s;
 		v.erase(v.begin(), std::find_if(v.begin(), v.end(),
-			std::not1(std::ptr_fun<int, int>(std::isspace))));
+			[](char c) { return !std::isspace(c); }));
 		return v;
 	}
 
@@ -170,8 +170,9 @@ namespace stdext
 	inline ::std::string rtrim(::std::string const& s)
 	{
 		auto v = s;
-		v.erase(std::find_if(v.rbegin(), v.rend(),
-			std::not1(std::ptr_fun<int, int>(std::isspace))).base(), v.end());
+		v.erase(v.begin() +
+			(v.rend() - std::find_if(v.rbegin(), v.rend(),
+				[](char c) { return !std::isspace(c); })));
 		return v;
 	}
 

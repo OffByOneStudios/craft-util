@@ -153,8 +153,15 @@ namespace path
 		};
 
 		class const_iterator
-			: public std::iterator<std::forward_iterator_tag, const data>
 		{
+		public:
+			using iterator_category = std::forward_iterator_tag;
+			using value_type = data;
+			using difference_type = uintptr_t;
+			using pointer = data const*;
+			using reference = data const&;
+
+		private:
 			struct _data : public data
 			{
 				size_t pos;
