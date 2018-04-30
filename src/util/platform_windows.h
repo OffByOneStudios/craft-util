@@ -3,6 +3,7 @@
 #include "common.h"
 #include <Windows.h>
 
+namespace util {
 namespace platform {
 namespace windows
 {
@@ -24,6 +25,6 @@ namespace windows
 
 		return message;
 	}
-}}
+}}}
 
 #endif
