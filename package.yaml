@@ -6,15 +6,9 @@ repo: http://github.com/OffByOneStudios/craft-util
 dependencies: []
 
 vendor-dependencies:
-  x86_64-pc-windows-msvccoff:
-    - libcurl
-    - picohttpparser
-  osx_x64_clang:
-    - curl
-    - picohttpparser
-  debian_x64_gcc:
-    - curl
-    - picohttpparser
+  x86_64-pc-windows-msvccoff: []
+  osx_x64_clang: []
+  debian_x64_gcc: []
 
 platform-dependencies:
   x86_64-pc-windows-msvccoff:
