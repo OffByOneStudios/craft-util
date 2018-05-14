@@ -218,8 +218,8 @@ namespace impl
 
 std::string path::join(std::string const& first, std::string const& second)
 {
-  if(second == "") return first;
-  if(first == "") return second;
+	if(second == "") return first;
+	if(first == "") return second;
   
 	impl::string i_first = impl::to(first);
 	impl::string i_second = impl::to(second);
