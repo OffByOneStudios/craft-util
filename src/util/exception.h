@@ -44,7 +44,7 @@ namespace stdext
 			: _inner(inner)
 		{
 			_msg = fmt::format(message, args...);
-			_msg_fmt = fmt::format("{0}: {1}", _msg.c_str(), _inner.what());
+			_msg_fmt = fmt::format("{0}:\n{1}", _msg.c_str(), _inner.what());
 		}
 
 		inline bool hasInner() const noexcept { return !_msg_fmt.empty(); }
