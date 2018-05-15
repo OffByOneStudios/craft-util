@@ -16,9 +16,7 @@ constexpr int PLATFORM_CHECK(char const* lhs, char const* rhs)
 // Windows include
 //#include "Windows.h"
 #else
-#include "unistd.h"
-#include <sys/stat.h>
-#include <dirent.h>
+
 #endif
 
 // C++ STD

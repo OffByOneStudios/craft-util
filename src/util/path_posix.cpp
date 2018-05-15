@@ -2,6 +2,10 @@
 #if !defined(_WIN32)
 #include "path.h"
 
+#include "unistd.h"
+#include <sys/stat.h>
+#include <dirent.h>
+
 #include "algorithms.hpp"
 #include "exception.h"
 #include <pwd.h>
@@ -111,10 +115,10 @@ bool path::is_root(const std::string &path)
 std::string path::absolute(std::string const& path)
 {
     if(path[0] == '/') return path;
-
-    char* f = getwd(NULL);
+	char* f = new char[PATH_MAX];
+    getcwd(f, PATH_MAX);
     std::string cwd(f);
-    free(f);
+    delete[] f;
 
     return path::join(cwd, path);
 }
