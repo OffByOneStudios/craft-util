@@ -7,7 +7,7 @@ dependencies: []
 
 vendor-dependencies:
   x86_64-pc-windows-msvccoff: []
-  osx_x64_clang: []
+  x86_64-apple-macosx-macho: []
   x86_64-pc-linux-gnu: []
 
 platform-dependencies:
@@ -17,13 +17,13 @@ platform-dependencies:
     - shlwapi.lib
     - Shell32.lib
 
-  osx_x64_clang:
+  x86_64-apple-macosx-macho:
     - '"-framework Security"'
   x86_64-pc-linux-gnu: []
 
 platform-flags:
   x86_64-pc-windows-msvccoff: []
-  osx_x64_clang:
+  x86_64-apple-macosx-macho:
     - "-std=c++1z"
     - "-stdlib=libc++"
     - "-Wc++11-extensions"
