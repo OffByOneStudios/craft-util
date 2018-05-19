@@ -74,6 +74,21 @@ namespace impl
 		return ret;
 	}
 
+	string canonicalize(string in)
+	{
+		PWSTR out;
+		HRESULT res = PathAllocCanonicalize(in.c_str(), PATHCCH_ALLOW_LONG_PATHS, &out);
+		if (res != S_OK)
+		{
+			assert(false && "PathAllocCanonicalize failed."); // TODO exceptions
+		}
+
+		string ret(out);
+		LocalFree(out);
+
+		return ret;
+	}
+
 	bool find_files_filter_file(WIN32_FIND_DATAW* data)
 	{
 		// TODO Filter wierd ones
@@ -256,6 +271,9 @@ std::string path::normalize(std::string const& path)
 			i_path[i] = '\\';
 		}
 	}
+
+	i_path = impl::canonicalize(i_path);
+
 	return impl::from(i_path);
 }
 
