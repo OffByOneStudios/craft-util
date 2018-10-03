@@ -11,10 +11,10 @@ namespace craft {
 		std::uniform_real_distribution<double> distribution;
 	public:
 
-		CRAFT_UTIL_EXPORTED WrappedRandom(long seed);
+		WrappedRandom(long seed);
 
-		CRAFT_UTIL_EXPORTED double Sample();
-		CRAFT_UTIL_EXPORTED void SetSeed(long seed);
-		CRAFT_UTIL_EXPORTED void SetDistribution(double lbound, double ubound);
+		double Sample();
+		void SetSeed(long seed);
+		void SetDistribution(double lbound, double ubound);
 	};
 }

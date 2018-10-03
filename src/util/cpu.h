@@ -7,8 +7,8 @@ namespace cpu{
 		std::string arch;
 	public:
 		CPU();
-		CRAFT_UTIL_EXPORTED uint32_t threads();
+		uint32_t threads();
 	};
 
-	CRAFT_UTIL_EXPORTED CPU* GetCPU();
+	CPU* GetCPU();
 }

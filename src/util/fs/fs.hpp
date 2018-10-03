@@ -40,5 +40,5 @@ namespace fs {
 
 	}
 
-	CRAFT_UTIL_EXPORTED std::string string_read(uint8_t*, size_t);
+	std::string string_read(uint8_t*, size_t);
 }}

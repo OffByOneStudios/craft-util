@@ -17,7 +17,7 @@
 #include "strings.hpp"
 
 #include "ider.hpp"
-#include "profiler.hpp"
+#include "profiler.h"
 #include "random.h"
 
 #include "concurrency/SafeSet.hpp"

@@ -3,7 +3,7 @@ common.cpp
 .vscode
 cmake/*
 CMakeLists.txt
-build
+build/
 dist
 .DS_Store
 *.zip

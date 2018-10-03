@@ -1,5 +1,6 @@
 #include "common.h"
 #include "random.h"
+
 using namespace craft;
 
 WrappedRandom::WrappedRandom(long seed)

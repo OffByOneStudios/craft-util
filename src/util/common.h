@@ -1,15 +1,5 @@
 #pragma once
 
-
-#include "util/defines.h"
-
-constexpr int PLATFORM_CHECK(char const* lhs, char const* rhs)
-{
-	return (('\0' == lhs[0]) && ('\0' == rhs[0])) ? 0
-		: (lhs[0] != rhs[0]) ? (lhs[0] - rhs[0])
-		: PLATFORM_CHECK(lhs + 1, rhs + 1);
-}
-
 #ifdef WIN32
 // Fix terrible windows header
 #define NOMINMAX
@@ -52,5 +42,5 @@ constexpr int PLATFORM_CHECK(char const* lhs, char const* rhs)
 #endif
 
 #define CURL_STATICLIB
-#include "curl/curl.h"
-#include "h2o/picohttpparser.h"
+//#include "curl/curl.h"
+//#include "h2o/picohttpparser.h"
