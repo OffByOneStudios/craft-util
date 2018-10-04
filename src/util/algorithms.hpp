@@ -75,8 +75,12 @@ namespace stdext
 	//
 
 	template <size_t N, typename TIterator>
-	struct element_iterator : public TIterator
+	struct element_iterator : private TIterator
 	{
+	private:
+		TIterator _internal;
+		
+	public:
 		typedef typename std::tuple_element<N, typename std::iterator_traits<TIterator>::value_type>::type value_type;
 		typedef value_type& reference;
 		typedef value_type* pointer;
@@ -85,10 +89,23 @@ namespace stdext
 
 		typedef element_iterator iterator;
 
-		inline element_iterator(TIterator const& it) : TIterator(it) { }
+		inline element_iterator(TIterator const& it) : _internal(it) { }
 
-		inline pointer operator->() const { return &(std::get<N>(*TIterator::operator->())); }
-		inline value_type operator*() const { return std::get<N>(TIterator::operator*()); }
+		inline pointer operator->() const { return &(std::get<N>(*_internal.operator->())); }
+		inline value_type operator*() const { return std::get<N>(_internal.operator*()); }
+		
+		inline element_iterator& operator++()
+		{
+			_internal.operator++();
+			return *this;
+		}
+		inline element_iterator operator++(int _)
+		{
+			return element_iterator(_internal.operator++(_));
+		}
+		
+		inline bool operator==(const element_iterator& other) const { return _internal == other._internal; }
+		inline bool operator!=(const element_iterator& other) const { return !(*this == other); }
 	};
 
 	template <typename TIterator>
