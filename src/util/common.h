@@ -2,7 +2,9 @@
 
 #ifdef WIN32
 // Fix terrible windows header
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 // Windows include
 //#include "Windows.h"
 #else
