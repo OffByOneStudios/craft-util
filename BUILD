@@ -12,3 +12,12 @@ cc_library(
     
     linkopts = ["-DEFAULTLIB:Ws2_32.lib", "-DEFAULTLIB:pathcch.lib", "-DEFAULTLIB:shlwapi.lib", "-DEFAULTLIB:Shell32.lib"]
 )
+
+cc_binary(
+    name = "test",
+    visibility = ["//visibility:public"],
+    srcs = ["test/graph.cpp"],
+    deps = ["util"],
+
+    copts = ["/std:c++latest"]
+)
