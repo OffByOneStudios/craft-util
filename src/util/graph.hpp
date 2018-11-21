@@ -331,6 +331,7 @@ namespace craft
 
             using Data = typename TFinal::Data;
 
+        public:
             using Label = typename TFinal::Label;
             using Node = typename TFinal::Node;
             using Edge = typename TFinal::Edge;
@@ -433,6 +434,30 @@ namespace craft
         public:
             using Base::attachLabel;
             using Base::attachEdge;
+
+        // Temporary
+        // TODO: Create a graph that uses types to compile time prove properties
+        // TODO: move the only functions there
+        public:
+            template<typename T>
+            T const* onlyPropOfTypeOnNode(Node* node) const
+            {
+                auto searchType = TTypeExtractor::extract<T>();
+                T const* result = nullptr;
+                try
+                {
+                    forAllPropsOnNode(node, [&](Prop* prop) {
+                        if (prop->type == searchType)
+                        {
+                            result = prop->data;
+                            throw nullptr;
+                        }
+                    });
+                }
+                catch (nullptr_t) { }
+
+                return result;
+            }
         };
     };
 
