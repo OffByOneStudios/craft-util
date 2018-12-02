@@ -19,5 +19,5 @@ cc_binary(
     srcs = ["test/graph.cpp"],
     deps = ["util"],
 
-    copts = ["/std:c++latest"]
+    copts = ["/std:c++17"]
 )

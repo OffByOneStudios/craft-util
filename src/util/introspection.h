@@ -18,6 +18,8 @@ constexpr size_t offsetof_impl(T const* t, U T::* a)
 }
 */
 
+#include <type_traits>
+
 #undef offsetof
 #define offsetof(Type_, Attr_)                          \
     (ptrdiff_t)((unsigned char*)(void*)&((*(Type_*)0).Attr_) - (unsigned char*)(void*)&(*(Type_*)0))
