@@ -13,15 +13,21 @@ public:
     typedef size_t Id;
 
     template <typename T>
-    inline static Id extract()
+    inline static Id extract_typeid()
     {
         return typeid(T).hash_code();
     }
 
     template <typename T>
-    inline static void* convert(T const& v)
+    inline static void* import_value(T const& v)
     {
         return (void*)v;
+    }
+
+    template <typename T>
+    inline static T* export_value(void* v)
+    {
+        return (T*)v;
     }
 };
 

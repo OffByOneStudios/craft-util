@@ -337,7 +337,7 @@ namespace craft
             using Edge = typename TFinal::Edge;
             using Prop = typename TFinal::Prop;
 
-        // Add functions
+        // Add functions 
         public:
             inline Label* addLabel(Data const& data, TypeId type)
             {
@@ -350,7 +350,7 @@ namespace craft
             template<typename T>
             inline Label* addLabel(T const& data)
             {
-                return addLabel(TTypeExtractor::convert<T>(data), TTypeExtractor::extract<T>());
+                return addLabel(TTypeExtractor::import_value<T>(data), TTypeExtractor::extract_typeid<T>());
             }
 
             inline Node* addNode(Data const& data, TypeId type)
@@ -364,7 +364,7 @@ namespace craft
             template<typename T>
             inline Node* addNode(T const& data)
             {
-                return addNode(TTypeExtractor::convert<T>(data), TTypeExtractor::extract<T>());
+                return addNode(TTypeExtractor::import_value<T>(data), TTypeExtractor::extract_typeid<T>());
             }
             
             // By default edges point from 0-index to all others
@@ -379,7 +379,7 @@ namespace craft
             template<typename T>
             inline Edge* addEdge(T const& data, std::vector<Node*> const& nodes, bool invert = false)
             {
-                return addEdge(TTypeExtractor::convert<T>(data), TTypeExtractor::extract<T>(), nodes, invert);
+                return addEdge(TTypeExtractor::import_value<T>(data), TTypeExtractor::extract_typeid<T>(), nodes, invert);
             }
             
             inline Prop* addProp(Data const& data, TypeId type, Node* on_node)
@@ -393,7 +393,7 @@ namespace craft
             template<typename T>
             inline Prop* addProp(T const& data, Node* on_node)
             {
-                return addProp(TTypeExtractor::convert<T>(data), TTypeExtractor::extract<T>(), on_node);
+                return addProp(TTypeExtractor::import_value<T>(data), TTypeExtractor::extract_typeid<T>(), on_node);
             }
 
             inline Prop* addProp(Data const& data, TypeId type, Edge* on_edge)
@@ -407,7 +407,7 @@ namespace craft
             template<typename T>
             inline Prop* addProp(T const& data, Edge* on_edge)
             {
-                return addProp(TTypeExtractor::convert<T>(data), TTypeExtractor::extract<T>(), on_edge);
+                return addProp(TTypeExtractor::import_value<T>(data), TTypeExtractor::extract_typeid<T>(), on_edge);
             }
 
         // Getter functions
@@ -440,16 +440,16 @@ namespace craft
         // TODO: move the only functions there
         public:
             template<typename T>
-            T const* onlyPropOfTypeOnNode(Node* node) const
+            T* firstPropOfTypeOnNode(Node* node) const
             {
-                auto searchType = TTypeExtractor::extract<T>();
-                T const* result = nullptr;
+                auto searchType = TTypeExtractor::extract_typeid<T>();
+                T* result = nullptr;
                 try
                 {
                     forAllPropsOnNode(node, [&](Prop* prop) {
-                        if (prop->type == searchType)
+                        if ((TypeId)prop->type == (TypeId)searchType)
                         {
-                            result = prop->data;
+                            result = &TTypeExtractor::export_value<T>(prop->data);
                             throw nullptr;
                         }
                     });
@@ -528,7 +528,7 @@ namespace craft
 
     // This type realizes the graph
     template<typename TGraphBase>
-    class Graph final
+    class Graph
         : public TGraphBase::template Actual<GraphFinalizer<TGraphBase>>
     {
 
